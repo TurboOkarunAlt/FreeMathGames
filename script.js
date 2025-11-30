@@ -1,0 +1,875 @@
+// Aurora Game Loader – No DevTools Needed
+// All errors + status will appear on screen
+
+const gameStrip = document.getElementById("gameStrip");
+const gameFrame = document.getElementById("gameFrame");
+const playerSection = document.getElementById("playerSection");
+const homeSection = document.querySelector(".home");
+const backBtn = document.getElementById("backBtn");
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+const clockEl = document.getElementById("clock");
+const settingsBtn = document.getElementById("settingsBtn");
+const helpBtn = document.getElementById("helpBtn");
+const helpModal = document.getElementById("helpModal");
+const closeHelpBtn = document.getElementById("closeHelpBtn");
+const statsDisplay = document.getElementById("stats");
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const settingsModal = document.getElementById("settingsModal");
+const closeSettingsBtn = document.getElementById("closeSettingsBtn");
+const statsTotal = document.getElementById("statsTotal");
+const statsPlayable = document.getElementById("statsPlayable");
+const statsFav = document.getElementById("statsFav");
+const modeDisplay = document.getElementById("modeDisplay");
+const soundToggle = document.getElementById("soundToggle");
+const darkModeToggle = document.getElementById("darkModeToggle");
+const cloakToggle = document.getElementById("cloakToggle");
+const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
+const resetBtn = document.getElementById("resetBtn");
+const favCount = document.getElementById("favCount");
+
+let selectedGameEntry = null;
+let selectedGameTitle = null;
+let selectedGameIndex = null;
+let allGames = [];
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+let currentTheme = localStorage.getItem("theme") || "dark";
+let colorTheme = localStorage.getItem("colorTheme") || "cyberpunk";
+let soundEnabled = JSON.parse(localStorage.getItem("soundEnabled")) !== false;
+let cloakEnabled = JSON.parse(localStorage.getItem("cloakEnabled")) || false;
+let cloakName = localStorage.getItem("cloakName") || "Google Classroom";
+let uploadedFaviconImage = localStorage.getItem("uploadedFaviconImage") || null;
+let recentlyPlayed = JSON.parse(localStorage.getItem("recentlyPlayed")) || [];
+let playtimeData = JSON.parse(localStorage.getItem("playtimeData")) || {};
+let gameStartTime = null;
+let gameCards = [];
+
+const originalTitle = document.title;
+const originalIcon = document.querySelector("link[rel='shortcut icon']");
+const cloakInputContainer = document.getElementById("cloakInputContainer");
+const cloakNameInput = document.getElementById("cloakNameInput");
+const faviconUpload = document.getElementById("faviconUpload");
+const clearImageFaviconBtn = document.getElementById("clearImageFaviconBtn");
+const recentBtn = document.getElementById("recentBtn");
+const recentModal = document.getElementById("recentModal");
+const closeRecentBtn = document.getElementById("closeRecentBtn");
+const recentListBody = document.getElementById("recentListBody");
+const playtimeDisplay = document.getElementById("playtime-display");
+const exportBtn = document.getElementById("exportBtn");
+const importBtn = document.getElementById("importBtn");
+const randomBtn = document.getElementById("randomBtn");
+const sessionTimer = document.getElementById("sessionTimer");
+const gameTitle = document.getElementById("gameTitle");
+
+let sessionStartTime = null;
+let sessionTimerInterval = null;
+let audioContext = null;
+
+// Sound effects with error handling
+function playSound(type) {
+  if (!soundEnabled) return;
+  try {
+    if (!audioContext) {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    
+    if (type === 'click') {
+      osc.frequency.value = 600;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    } else if (type === 'launch') {
+      osc.frequency.setValueAtTime(400, now);
+      osc.frequency.exponentialRampToValueAtTime(800, now + 0.3);
+      osc.type = 'triangle';
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    }
+  } catch (e) {
+    // Silently fail if audio not supported
+  }
+}
+
+// Initialize theme
+function initTheme() {
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  document.documentElement.setAttribute("data-color-theme", colorTheme);
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  localStorage.setItem("theme", currentTheme);
+  showMsg("Theme switched to " + (currentTheme === "light" ? "light" : "dark"));
+}
+
+function updateFavicon() {
+  if (originalIcon && uploadedFaviconImage) {
+    originalIcon.href = uploadedFaviconImage;
+  }
+}
+
+function updateTabCloak() {
+  if (cloakEnabled) {
+    document.title = cloakName;
+    if (originalIcon) originalIcon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234d90fe' width='100' height='100'/><text x='50' y='60' font-size='60' fill='white' text-anchor='middle'>C</text></svg>";
+  } else {
+    document.title = originalTitle;
+    updateFavicon();
+  }
+}
+
+// Update clock every second
+function updateClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  clockEl.textContent = hours + ':' + minutes;
+}
+updateClock();
+setInterval(updateClock, 1000);
+initTheme();
+updateTabCloak();
+
+// Create a visible debug message box
+const debug = document.createElement("div");
+debug.style.position = "fixed";
+debug.style.bottom = "10px";
+debug.style.left = "10px";
+debug.style.padding = "12px 16px";
+debug.style.background = "rgba(0,0,0,0.85)";
+debug.style.color = "white";
+debug.style.fontSize = "13px";
+debug.style.borderRadius = "10px";
+debug.style.zIndex = "9999";
+debug.style.maxWidth = "320px";
+debug.style.pointerEvents = "none";
+debug.style.border = "1px solid rgba(10,185,230,0.3)";
+debug.style.boxShadow = "0 8px 24px rgba(0,0,0,0.6)";
+debug.style.animation = "slideInLeft 0.3s ease";
+debug.style.fontWeight = "500";
+document.body.appendChild(debug);
+
+let msgTimeout;
+function showMsg(msg) {
+  debug.textContent = msg;
+  debug.style.opacity = "1";
+  clearTimeout(msgTimeout);
+  msgTimeout = setTimeout(() => {
+    debug.style.opacity = "0.6";
+  }, 3000);
+}
+
+const style = document.createElement("style");
+style.textContent = `@keyframes slideInLeft {from{transform:translateX(-40px);opacity:0}to{transform:translateX(0);opacity:1}}`;
+document.head.appendChild(style);
+
+// Load the game list
+async function loadGames() {
+  showMsg("Loading games...");
+
+  try {
+    const res = await fetch("./games.json", { cache: "no-store" });
+
+    if (!res.ok) {
+      showMsg("Error: Could not load games");
+      return;
+    }
+
+    const gameList = await res.json();
+
+    if (!Array.isArray(gameList)) {
+      showMsg("Error: Games list is not an array");
+      return;
+    }
+
+    if (gameList.length === 0) {
+      showMsg("Error: No games found");
+      return;
+    }
+
+    allGames = gameList;
+    showMsg("Loaded " + gameList.length + " games");
+    initTheme();
+    updateStats();
+    updatePlaytimeDisplay();
+    filterAndRenderGames();
+  } catch (e) {
+    showMsg("Error: " + e.message);
+  }
+}
+
+function filterAndRenderGames() {
+  let filtered = [...allGames];
+  const searchTerm = searchInput.value.toLowerCase();
+  const sortBy = sortSelect.value;
+
+  // Filter by search
+  if (searchTerm) {
+    filtered = filtered.filter(g => g.title.toLowerCase().includes(searchTerm));
+  }
+
+  // Filter by sort
+  if (sortBy === "playable") {
+    filtered = filtered.filter(g => g.entry);
+  } else if (sortBy === "favorites") {
+    filtered = filtered.filter(g => favorites.includes(g.title));
+  } else if (sortBy === "alphabetical") {
+    filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  renderGames(filtered);
+}
+
+function renderGames(games) {
+  gameStrip.innerHTML = "";
+
+  if (games.length === 0) {
+    const empty = document.createElement("div");
+    empty.style.padding = "20px";
+    empty.style.color = "var(--muted)";
+    empty.textContent = "No games found";
+    gameStrip.appendChild(empty);
+    return;
+  }
+
+  games.forEach((g, idx) => {
+    const template = document.getElementById("cardTemplate");
+    const card = template.content.cloneNode(true);
+    
+    const img = card.querySelector(".game-cover");
+    img.src = g.cover || "https://via.placeholder.com/300x200?text=" + encodeURIComponent(g.title);
+    img.alt = g.title;
+    
+    img.onerror = () => {
+      img.src = "https://via.placeholder.com/300x200?text=" + encodeURIComponent(g.title);
+    };
+    
+    const titleEl = card.querySelector(".game-title");
+    titleEl.textContent = g.title;
+
+    const cardDiv = card.querySelector(".game-card");
+    cardDiv.dataset.index = idx;
+    cardDiv.onclick = () => {
+      selectGame(g, allGames.indexOf(g));
+      if (g.entry) launchGame();
+    };
+    
+    cardDiv.onmouseenter = () => {
+      document.querySelectorAll('.game-card.active').forEach(c => c.classList.remove('active'));
+      cardDiv.classList.add('active');
+    };
+    
+    if (!g.entry) {
+      cardDiv.style.opacity = "0.5";
+    }
+    
+    const playtime = playtimeData[g.title] || 0;
+    if (playtime > 0) {
+      const badge = document.createElement('div');
+      badge.className = 'stat-badge';
+      badge.textContent = playtime.toFixed(1) + 'h';
+      cardDiv.querySelector('.game-card-image').appendChild(badge);
+    }
+
+    gameStrip.appendChild(card);
+  });
+  
+  renderFavoritesBar();
+}
+
+function selectGame(game, index) {
+  selectedGameTitle = game.title;
+  selectedGameIndex = index;
+  selectedGameEntry = game.entry;
+  showMsg(game.title + " selected");
+}
+
+function addToRecentlyPlayed(title) {
+  recentlyPlayed = recentlyPlayed.filter(g => g !== title);
+  recentlyPlayed.unshift(title);
+  recentlyPlayed = recentlyPlayed.slice(0, 10);
+  localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));
+  gameStartTime = Date.now();
+}
+
+function updatePlaytime(title) {
+  if (sessionStartTime && title) {
+    const elapsed = (Date.now() - sessionStartTime) / 3600000;
+    playtimeData[title] = (playtimeData[title] || 0) + elapsed;
+    localStorage.setItem("playtimeData", JSON.stringify(playtimeData));
+    updatePlaytimeDisplay();
+  }
+}
+
+function updatePlaytimeDisplay() {
+  const total = Object.values(playtimeData).reduce((a, b) => a + b, 0);
+  playtimeDisplay.textContent = total.toFixed(1) + "h";
+}
+
+function launchGame() {
+  if (!selectedGameEntry) {
+    showMsg("Error: Game files not found");
+    return;
+  }
+
+  playSound('launch');
+  homeSection.style.display = "none";
+  playerSection.style.display = "flex";
+  gameFrame.src = selectedGameEntry;
+  gameTitle.textContent = selectedGameTitle;
+  addToRecentlyPlayed(selectedGameTitle);
+  
+  // Clean up old timer if exists
+  if (sessionTimerInterval) {
+    clearInterval(sessionTimerInterval);
+    sessionTimerInterval = null;
+  }
+  
+  // Start session timer
+  sessionStartTime = Date.now();
+  updateSessionTimer();
+  sessionTimerInterval = setInterval(updateSessionTimer, 1000);
+
+  showMsg("Game loaded");
+}
+
+function updateSessionTimer() {
+  if (sessionStartTime) {
+    const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    sessionTimer.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+  }
+}
+
+backBtn.onclick = () => {
+  playSound('click');
+  updatePlaytime(selectedGameTitle);
+  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionStartTime = null;
+  gameFrame.src = "";
+  playerSection.style.display = "none";
+  homeSection.style.display = "flex";
+  showMsg("Home");
+};
+
+fullscreenBtn.onclick = () => {
+  playSound('click');
+  if (gameFrame.requestFullscreen) {
+    gameFrame.requestFullscreen().catch(err => showMsg("Fullscreen not available"));
+  } else {
+    showMsg("Fullscreen not supported");
+  }
+};
+
+randomBtn.onclick = () => {
+  playSound('click');
+  const playableGames = allGames.filter(g => g.entry);
+  if (playableGames.length === 0) {
+    showMsg("No playable games available");
+    return;
+  }
+  const randomGame = playableGames[Math.floor(Math.random() * playableGames.length)];
+  selectGame(randomGame, allGames.indexOf(randomGame));
+  launchGame();
+};
+
+settingsBtn.onclick = () => {
+  openSettings();
+};
+
+closeSettingsBtn.onclick = () => {
+  settingsModal.style.display = "none";
+};
+
+helpBtn.onclick = () => {
+  helpModal.style.display = "flex";
+};
+
+closeHelpBtn.onclick = () => {
+  helpModal.style.display = "none";
+};
+
+helpModal.addEventListener("click", (e) => {
+  if (e.target === helpModal) {
+    helpModal.style.display = "none";
+  }
+});
+
+recentBtn.onclick = () => {
+  recentModal.style.display = "flex";
+  renderRecentlyPlayed();
+};
+
+closeRecentBtn.onclick = () => {
+  recentModal.style.display = "none";
+};
+
+recentModal.addEventListener("click", (e) => {
+  if (e.target === recentModal) {
+    recentModal.style.display = "none";
+  }
+});
+
+function renderRecentlyPlayed() {
+  if (recentlyPlayed.length === 0) {
+    recentListBody.innerHTML = "<div style='color:var(--muted);text-align:center;padding:20px;'>No recently played games yet</div>";
+    return;
+  }
+  recentListBody.innerHTML = recentlyPlayed.map(title => {
+    const hours = playtimeData[title] ? playtimeData[title].toFixed(1) : "0.0";
+    return "<div class='recent-item'><div class='recent-title'>" + title + "</div><div class='recent-time'>" + hours + "h</div></div>";
+  }).join("");
+}
+
+exportBtn.onclick = () => {
+  const backup = {
+    favorites: favorites,
+    theme: currentTheme,
+    soundEnabled: soundEnabled,
+    cloakEnabled: cloakEnabled,
+    cloakName: cloakName,
+    recentlyPlayed: recentlyPlayed,
+    playtimeData: playtimeData,
+    uploadedFaviconImage: uploadedFaviconImage
+  };
+  const dataStr = JSON.stringify(backup, null, 2);
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "aurora-backup-" + new Date().toISOString().split("T")[0] + ".json";
+  a.click();
+  showMsg("Settings exported");
+};
+
+importBtn.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const backup = JSON.parse(event.target.result);
+      favorites = backup.favorites || [];
+      currentTheme = backup.theme || "dark";
+      soundEnabled = backup.soundEnabled !== false;
+      cloakEnabled = backup.cloakEnabled || false;
+      cloakName = backup.cloakName || "Google Classroom";
+      recentlyPlayed = backup.recentlyPlayed || [];
+      playtimeData = backup.playtimeData || {};
+      uploadedFaviconImage = backup.uploadedFaviconImage || null;
+      
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      localStorage.setItem("theme", currentTheme);
+      localStorage.setItem("soundEnabled", JSON.stringify(soundEnabled));
+      localStorage.setItem("cloakEnabled", JSON.stringify(cloakEnabled));
+      localStorage.setItem("cloakName", cloakName);
+      localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));
+      localStorage.setItem("playtimeData", JSON.stringify(playtimeData));
+      localStorage.setItem("uploadedFaviconImage", uploadedFaviconImage);
+      
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      updateFavicon();
+      updateTabCloak();
+      updateStats();
+      updatePlaytimeDisplay();
+      openSettings();
+      showMsg("Settings imported successfully");
+    } catch (err) {
+      showMsg("Error: Invalid backup file");
+    }
+  };
+  reader.readAsText(file);
+  importBtn.value = "";
+};
+
+function updateStats() {
+  const playableCount = allGames.filter(g => g.entry).length;
+  statsTotal.textContent = allGames.length;
+  statsPlayable.textContent = playableCount;
+  statsFav.textContent = favorites.length;
+  favCount.textContent = favorites.length;
+  modeDisplay.textContent = currentTheme === "dark" ? "Dark" : "Light";
+  statsDisplay.textContent = allGames.length + " | " + playableCount + " | " + favorites.length;
+}
+
+function openSettings() {
+  settingsModal.style.display = "flex";
+  soundToggle.checked = soundEnabled;
+  darkModeToggle.checked = currentTheme === "dark";
+  cloakToggle.checked = cloakEnabled;
+  cloakNameInput.value = cloakName;
+  cloakInputContainer.style.display = cloakEnabled ? "block" : "none";
+  updateStats();
+}
+
+function closeSettings() {
+  settingsModal.style.display = "none";
+}
+
+soundToggle.addEventListener("change", () => {
+  soundEnabled = soundToggle.checked;
+  localStorage.setItem("soundEnabled", soundEnabled);
+  showMsg(soundEnabled ? "Sound enabled" : "Sound disabled");
+});
+
+darkModeToggle.addEventListener("change", () => {
+  if (darkModeToggle.checked) {
+    currentTheme = "dark";
+  } else {
+    currentTheme = "light";
+  }
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  localStorage.setItem("theme", currentTheme);
+  showMsg(currentTheme === "dark" ? "Dark mode enabled" : "Light mode enabled");
+});
+
+cloakToggle.addEventListener("change", () => {
+  cloakEnabled = cloakToggle.checked;
+  localStorage.setItem("cloakEnabled", cloakEnabled);
+  cloakInputContainer.style.display = cloakEnabled ? "block" : "none";
+  updateTabCloak();
+  showMsg(cloakEnabled ? "Tab cloaked" : "Cloak disabled");
+});
+
+cloakNameInput.addEventListener("input", () => {
+  cloakName = cloakNameInput.value || "Google Classroom";
+  localStorage.setItem("cloakName", cloakName);
+  if (cloakEnabled) {
+    updateTabCloak();
+  }
+});
+
+faviconUpload.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      uploadedFaviconImage = event.target.result;
+      localStorage.setItem("uploadedFaviconImage", uploadedFaviconImage);
+      updateFavicon();
+      showMsg("Favicon uploaded");
+      faviconUpload.value = "";
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+clearImageFaviconBtn.addEventListener("click", () => {
+  uploadedFaviconImage = null;
+  localStorage.removeItem("uploadedFaviconImage");
+  updateFavicon();
+  showMsg("Custom image cleared");
+});
+
+clearFavoritesBtn.onclick = () => {
+  if (confirm("Clear all " + favorites.length + " favorites?")) {
+    favorites = [];
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    favCount.textContent = "0";
+    showMsg("All favorites cleared");
+    filterAndRenderGames();
+  }
+};
+
+const clearRecentHistoryBtn = document.getElementById("clearRecentBtn");
+if (clearRecentHistoryBtn) {
+  clearRecentHistoryBtn.onclick = () => {
+    if (confirm("Clear " + recentlyPlayed.length + " recently played games?")) {
+      recentlyPlayed = [];
+      localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));
+      showMsg("Recent history cleared");
+      updateSettingsDisplay();
+    }
+  };
+}
+
+const animationsToggle = document.getElementById("animationsToggle");
+const timerToggle = document.getElementById("timerToggle");
+const autoPlayToggle = document.getElementById("autoPlayToggle");
+let animationsEnabled = JSON.parse(localStorage.getItem("animationsEnabled")) !== false;
+let timerEnabled = JSON.parse(localStorage.getItem("timerEnabled")) !== false;
+let autoPlayEnabled = JSON.parse(localStorage.getItem("autoPlayEnabled")) || false;
+
+if (animationsToggle) {
+  animationsToggle.checked = animationsEnabled;
+  animationsToggle.onchange = () => {
+    animationsEnabled = animationsToggle.checked;
+    localStorage.setItem("animationsEnabled", animationsEnabled);
+    document.body.style.animation = animationsEnabled ? "" : "none";
+    showMsg(animationsEnabled ? "Animations enabled" : "Animations disabled");
+  };
+}
+
+if (timerToggle) {
+  timerToggle.checked = timerEnabled;
+  timerToggle.onchange = () => {
+    timerEnabled = timerToggle.checked;
+    localStorage.setItem("timerEnabled", timerEnabled);
+    sessionTimer.style.display = timerEnabled ? "block" : "none";
+    showMsg(timerEnabled ? "Session timer enabled" : "Session timer disabled");
+  };
+}
+
+if (autoPlayToggle) {
+  autoPlayToggle.checked = autoPlayEnabled;
+  autoPlayToggle.onchange = () => {
+    autoPlayEnabled = autoPlayToggle.checked;
+    localStorage.setItem("autoPlayEnabled", autoPlayEnabled);
+    showMsg(autoPlayEnabled ? "Auto-play enabled" : "Auto-play disabled");
+  };
+}
+
+function getStorageUsage() {
+  let total = 0;
+  for (let key in localStorage) {
+    if (localStorage.hasOwnProperty(key)) {
+      total += localStorage[key].length + key.length;
+    }
+  }
+  return (total / 1024).toFixed(2);
+}
+
+function getTotalPlaytime() {
+  const total = Object.values(playtimeData).reduce((a, b) => a + b, 0);
+  return total.toFixed(1);
+}
+
+function updateSettingsDisplay() {
+  const statsRecent = document.getElementById("statsRecent");
+  const storageUsage = document.getElementById("storageUsage");
+  const totalPlaytime = document.getElementById("totalPlaytime");
+  
+  if (statsRecent) statsRecent.textContent = recentlyPlayed.length;
+  if (storageUsage) storageUsage.textContent = getStorageUsage() + " KB";
+  if (totalPlaytime) totalPlaytime.textContent = getTotalPlaytime() + "h";
+}
+
+settingsBtn.addEventListener("click", () => {
+  updateSettingsDisplay();
+  const colorThemeSelect = document.getElementById("colorThemeSelect");
+  if (colorThemeSelect) colorThemeSelect.value = colorTheme;
+  settingsModal.style.display = "flex";
+  playSound('click');
+});
+
+const colorThemeSelect = document.getElementById("colorThemeSelect");
+if (colorThemeSelect) {
+  colorThemeSelect.onchange = () => {
+    colorTheme = colorThemeSelect.value;
+    localStorage.setItem("colorTheme", colorTheme);
+    document.documentElement.setAttribute("data-color-theme", colorTheme);
+    showMsg("Theme: " + colorTheme);
+  };
+}
+
+function renderFavoritesBar() {
+  const favBar = document.getElementById("favoritesBar");
+  if (!favBar) return;
+  const favGames = allGames.filter(g => favorites.includes(g.title)).slice(0, 9);
+  if (favGames.length === 0) {
+    favBar.innerHTML = '<span style="color:var(--muted);font-size:0.9rem;">⭐ Add games to favorites to see them here</span>';
+    return;
+  }
+  favBar.innerHTML = '<span style="color:var(--muted);font-size:0.85rem;white-space:nowrap;">⭐ Quick Favorites:</span>';
+  favGames.forEach((game, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "sort-select";
+    btn.style.cssText = "padding:8px 12px;";
+    btn.textContent = (idx + 1) + ". " + game.title;
+    btn.onclick = () => {
+      selectGame(game, allGames.indexOf(game));
+      if (game.entry) {
+        playSound('launch');
+        launchGame();
+      }
+    };
+    favBar.appendChild(btn);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (playerSection.style.display === "none" && /^[1-9]$/.test(e.key)) {
+    const gameNum = parseInt(e.key) - 1;
+    const gameCards = document.querySelectorAll(".game-card");
+    if (gameNum < gameCards.length && gameNum < allGames.length) {
+      const cardTitles = Array.from(gameCards).map(c => c.querySelector(".game-title").textContent);
+      const selectedTitle = cardTitles[gameNum];
+      const idx = allGames.findIndex(g => g.title === selectedTitle);
+      if (idx >= 0) {
+        selectGame(allGames[idx], idx);
+        if (allGames[idx].entry) {
+          playSound('launch');
+          launchGame();
+        }
+      }
+    }
+  }
+}, true);
+
+resetBtn.onclick = () => {
+  if (confirm("Reset all settings to default? This will:\n- Clear favorites\n- Reset theme to dark\n- Enable sound\n- Disable tab cloak\n- Clear uploaded favicon\n- Clear recent history")) {
+    favorites = [];
+    currentTheme = "dark";
+    soundEnabled = true;
+    cloakEnabled = false;
+    cloakName = "Google Classroom";
+    uploadedFaviconImage = null;
+    animationsEnabled = true;
+    timerEnabled = true;
+    autoPlayEnabled = false;
+    recentlyPlayed = [];
+    playtimeData = {};
+    localStorage.clear();
+    document.documentElement.setAttribute("data-theme", "dark");
+    soundToggle.checked = true;
+    darkModeToggle.checked = false;
+    cloakToggle.checked = false;
+    if (animationsToggle) animationsToggle.checked = true;
+    if (timerToggle) timerToggle.checked = true;
+    if (autoPlayToggle) autoPlayToggle.checked = false;
+    cloakNameInput.value = "Google Classroom";
+    cloakInputContainer.style.display = "none";
+    favCount.textContent = "0";
+    updateFavicon();
+    updateTabCloak();
+    updateStats();
+    updatePlaytimeDisplay();
+    localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));
+    localStorage.setItem("playtimeData", JSON.stringify(playtimeData));
+    updateSettingsDisplay();
+    showMsg("All settings reset");
+    filterAndRenderGames();
+  }
+};
+
+settingsModal.addEventListener("click", (e) => {
+  if (e.target === settingsModal) {
+    closeSettings();
+  }
+});
+
+searchInput.addEventListener("input", () => {
+  filterAndRenderGames();
+});
+
+sortSelect.addEventListener("change", () => {
+  filterAndRenderGames();
+});
+
+
+// Keyboard navigation for game strip
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && selectedGameEntry && playerSection.style.display === "none") {
+    e.preventDefault();
+    launchGame();
+  } else if (e.key === 'Escape' && playerSection.style.display === "flex") {
+    e.preventDefault();
+    backBtn.click();
+  }
+});
+
+// Scroll buttons
+const scrollLeftBtn = document.getElementById('scrollLeftBtn');
+const scrollRightBtn = document.getElementById('scrollRightBtn');
+
+if (scrollLeftBtn) {
+  scrollLeftBtn.onclick = () => {
+    gameStrip.scrollLeft -= 300;
+  };
+}
+
+if (scrollRightBtn) {
+  scrollRightBtn.onclick = () => {
+    gameStrip.scrollLeft += 300;
+  };
+}
+
+// Enhanced Cursor Trail Particles
+let lastParticleTime = 0;
+document.addEventListener('mousemove', (e) => {
+  const now = Date.now();
+  if (now - lastParticleTime > 15) {
+    lastParticleTime = now;
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 40 + Math.random() * 60;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+    particle.style.setProperty('--tx', tx + 'px');
+    particle.style.setProperty('--ty', ty + 'px');
+    particle.style.left = e.clientX + 'px';
+    particle.style.top = e.clientY + 'px';
+    const scale = 0.6 + Math.random() * 0.8;
+    particle.style.setProperty('--scale', scale);
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 2000);
+  }
+});
+
+// Konami Code Easter Egg
+let konamiCode = [];
+const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+document.addEventListener('keydown', (e) => {
+  konamiCode.push(e.key.toLowerCase());
+  konamiCode = konamiCode.slice(-10);
+  if (konamiCode.join(',') === konamiSequence.join(',')) {
+    triggerKonamiMode();
+  }
+});
+
+function triggerKonamiMode() {
+  playSound('click');
+  showMsg('🎮 KONAMI CODE ACTIVATED! 🎮');
+  document.querySelectorAll('.game-card').forEach(card => {
+    card.style.animation = 'cardSpin 0.8s ease-in-out';
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.style.animation = '';
+    });
+  }, 800);
+}
+
+// Keyboard Navigation Improvements
+let currentGameIndex = 0;
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') {
+    const cards = document.querySelectorAll('.game-card');
+    if (cards.length > 0) {
+      currentGameIndex = (currentGameIndex + 1) % cards.length;
+      const card = cards[currentGameIndex];
+      card.focus();
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      card.dispatchEvent(new MouseEvent('mouseenter'));
+    }
+  } else if (e.key === 'ArrowLeft') {
+    const cards = document.querySelectorAll('.game-card');
+    if (cards.length > 0) {
+      currentGameIndex = (currentGameIndex - 1 + cards.length) % cards.length;
+      const card = cards[currentGameIndex];
+      card.focus();
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      card.dispatchEvent(new MouseEvent('mouseenter'));
+    }
+  } else if (e.key === 'Enter') {
+    const activeCard = document.querySelector('.game-card.active');
+    if (activeCard) {
+      activeCard.click();
+    }
+  }
+});
+
+// Start loading when page opens
+loadGames();
