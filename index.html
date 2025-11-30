@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aurora — Switch Theme</title>
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">Aurora</div>
+    </div>
+    <div class="header-right">
+      <div id="clock" class="stats-display" title="Current time">00:00</div>
+      <div id="stats" class="stats-display"></div>
+      <div id="playtime-display" class="stats-display" title="Total playtime">-- h</div>
+      <button id="recentBtn" class="icon-btn" title="Recently Played">R</button>
+      <button id="helpBtn" class="icon-btn" title="Help & Shortcuts">?</button>
+      <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- HOME SCREEN -->
+    <section class="home">
+      <div class="search-bar-wrapper">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search games...">
+        <select id="sortSelect" class="sort-select">
+          <option value="default">All Games</option>
+          <option value="playable">Playable Only</option>
+          <option value="favorites">Favorites</option>
+          <option value="alphabetical">A - Z</option>
+        </select>
+        <button id="randomBtn" class="sort-select" style="background:rgba(10,185,230,0.2);border-color:rgba(10,185,230,0.4);cursor:pointer;min-width:140px;font-weight:600;" title="Launch a random game">🎲 Random Game</button>
+      </div>
+      <div id="favoritesBar" style="display:flex;gap:12px;padding:12px 24px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;"></div>
+      <div class="game-strip-wrapper">
+        <button id="scrollLeftBtn" class="scroll-btn scroll-btn-left">❮</button>
+        <div class="game-strip" id="gameStrip" tabindex="0" aria-label="Game library grid"></div>
+        <button id="scrollRightBtn" class="scroll-btn scroll-btn-right">❯</button>
+      </div>
+    </section>
+
+    <!-- GAME PLAYER -->
+    <section class="player" id="playerSection" style="display:none;">
+      <div class="player-toolbar">
+        <button id="backBtn" class="toolbar-btn">Home</button>
+        <button id="fullscreenBtn" class="toolbar-btn">Fullscreen</button>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:20px;">
+          <div style="font-size:0.9rem;color:var(--muted);" id="gameTitle">Game</div>
+          <div style="font-size:0.85rem;color:var(--accent);font-weight:600;" id="sessionTimer">00:00</div>
+        </div>
+      </div>
+      <iframe id="gameFrame" class="game-frame" title="Game frame"></iframe>
+    </section>
+  </main>
+
+  <!-- TEMPLATE FOR GAME CARDS -->
+  <template id="cardTemplate">
+    <div class="game-card">
+      <div class="game-card-image">
+        <img class="game-cover" alt="game cover" />
+      </div>
+      <div class="game-title">Game</div>
+    </div>
+  </template>
+
+  <!-- RECENTLY PLAYED MODAL -->
+  <div id="recentModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Recently Played</h3>
+        <button id="closeRecentBtn" class="close-btn">X</button>
+      </div>
+      <div class="modal-body" id="recentListBody">
+        <div style="color:var(--muted);text-align:center;padding:20px;">No recently played games yet</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div id="helpModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Keyboard Shortcuts</h3>
+        <button id="closeHelpBtn" class="close-btn">X</button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section">
+          <h4>Navigation</h4>
+          <div class="help-item"><span class="key">←</span> Scroll games left</div>
+          <div class="help-item"><span class="key">→</span> Scroll games right</div>
+          <div class="help-item"><span class="key">Enter</span> Play selected game</div>
+          <div class="help-item"><span class="key">Esc</span> Exit game</div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.05);margin:12px 0;"></div>
+        <div class="help-section">
+          <h4>Features</h4>
+          <div class="help-item"><span class="key">F11</span> Fullscreen mode</div>
+          <div class="help-item"><span class="key">Ctrl+F</span> Search games</div>
+          <div class="help-item"><span class="key">🎲</span> Random game launcher</div>
+          <div class="help-item"><span class="key">⏱️</span> Session timer in-game</div>
+          <div class="help-item">Sound effects on interactions</div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.05);margin:12px 0;"></div>
+        <div class="help-section">
+          <h4>Tips</h4>
+          <div class="help-item">Use sort dropdown to filter games</div>
+          <div class="help-item">Your favorites persist automatically</div>
+          <div class="help-item">Customize your tab in settings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>⚙️ Settings</h3>
+        <button id="closeSettingsBtn" class="close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-option">
+          <div class="settings-label">🔊 Sound Effects</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="soundToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">🌙 Dark Mode</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">✨ Animations</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="animationsToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">⏱️ Session Timer</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="timerToggle" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">🚀 Auto-Play on Launch</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="autoPlayToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">🎨 Color Theme</div>
+          <select id="colorThemeSelect" class="sort-select" style="width:100%; margin-top:8px;">
+            <option value="cyberpunk">Cyberpunk (Blue/Red)</option>
+            <option value="retro">Retro (Green/Yellow)</option>
+            <option value="ocean">Ocean (Cyan/Purple)</option>
+            <option value="fire">Fire (Orange/Red)</option>
+            <option value="synthwave">Synthwave (Pink/Purple)</option>
+          </select>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">🔒 Tab Cloak</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="cloakToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div id="cloakInputContainer" style="display:none;">
+          <input type="text" id="cloakNameInput" class="search-bar" placeholder="Enter tab name..." style="width:100%; margin-top:8px;">
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">⭐ Total Favorites</div>
+          <div class="settings-value"><span id="favCount">0</span> games</div>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-option" style="flex-direction: column; align-items: stretch;">
+          <label for="faviconUpload" style="display:block; margin-bottom:8px;">
+            <input type="file" id="faviconUpload" accept="image/*" style="display:none;">
+            <span class="settings-btn" style="display:block; text-align:center; margin:0;">📤 Upload Favicon</span>
+          </label>
+          <button id="clearImageFaviconBtn" class="settings-btn">🗑️ Clear Favicon</button>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-option">
+          <button id="clearFavoritesBtn" class="settings-btn danger">🗑️ Clear Favorites</button>
+        </div>
+        <div class="settings-option">
+          <button id="clearRecentBtn" class="settings-btn danger">📜 Clear Recent History</button>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-option">
+          <button id="exportBtn" class="settings-btn">💾 Export Settings</button>
+        </div>
+        <div class="settings-option">
+          <label for="importBtn" style="display:block;">
+            <input type="file" id="importBtn" accept=".json" style="display:none;">
+            <span class="settings-btn" style="display:block; text-align:center; margin:0;">📥 Import Settings</span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <button id="resetBtn" class="settings-btn danger">🔄 Reset All Settings</button>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-info">
+          <div class="info-row"><strong>Total Games:</strong> <span id="statsTotal">0</span></div>
+          <div class="info-row"><strong>Playable:</strong> <span id="statsPlayable">0</span></div>
+          <div class="info-row"><strong>Favorites:</strong> <span id="statsFav">0</span></div>
+          <div class="info-row"><strong>Recently Played:</strong> <span id="statsRecent">0</span></div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.05);margin:12px 0;"></div>
+        <div class="settings-info">
+          <div class="info-row"><strong>Local Storage:</strong> <span id="storageUsage">0 KB</span></div>
+          <div class="info-row"><strong>Total Playtime:</strong> <span id="totalPlaytime">0h</span></div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,0.05);margin:12px 0;"></div>
+        <div class="settings-info">
+          <div class="info-row"><strong>App:</strong> Aurora Game Launcher</div>
+          <div class="info-row"><strong>Version:</strong> 1.2.0</div>
+          <div class="info-row"><strong>Mode:</strong> <span id="modeDisplay">Dark</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
