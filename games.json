@@ -208,5 +208,10 @@
     "title": "Slender Man The Eight Pages",
     "entry": "games/slendermanpages/index.html",
     "cover": "games/slendermanpages/cover.png"
+  },
+  {
+    "title": "We Become What We Behold",
+    "entry": "games/WBWWB/index.html",
+    "cover": "games/WBWWB/cover.png"
   }
 ]
