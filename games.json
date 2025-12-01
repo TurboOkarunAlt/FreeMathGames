@@ -10,7 +10,7 @@
     "cover": "games/bendy/cover.png"
   },
   {
-    "title": "FNAF 1",
+    "title": "FNAF1",
     "entry": "games/FNAF1/index.html",
     "cover": "games/FNAF1/cover.png"
   },
@@ -81,3 +81,77 @@
   },
   {
     "title": "Granny 2",
+    "entry": "games/Granny2/index.html",
+    "cover": "games/Granny2/cover.png"
+  },
+  {
+    "title": "Granny 3",
+    "entry": "games/Granny3/index.html",
+    "cover": "games/Granny3/cover.png"
+  },
+  {
+    "title": "Fruit Ninja",
+    "entry": "games/FruitNinja/index.html",
+    "cover": "games/FruitNinja/cover.png"
+  },
+  {
+    "title": "Five Night's at Shrek's Hotel",
+    "entry": "games/FNASH/index.html",
+    "cover": "games/FNASH/cover.png"
+  },
+  {
+    "title": "One Night as Freddy",
+    "entry": "games/ONAF/index.html",
+    "cover": "games/ONAF/cover.png"
+  },
+  {
+    "title": "Cookie Clicker",
+    "entry": "games/CookieClicker/index.html",
+    "cover": "games/CookieClicker/cover.png"
+  },
+  {
+    "title": "Baldi's Basics",
+    "entry": "games/BB/index.html",
+    "cover": "games/BB/cover.png"
+  },
+  {
+    "title": "Baldi Basic's The Ultra Decompile",
+    "entry": "games/BBTUD/index.html",
+    "cover": "games/BBTUD/cover.png"
+  },
+  {
+    "title": "Baldi Basic's Remastered",
+    "entry": "games/BBR/index.html",
+    "cover": "games/BBR/cover.png"
+  },
+  {
+    "title": "Subway Surfers",
+    "entry": "games/Subwaysurfers/index.html",
+    "cover": "games/Subwaysurfers/cover.png"
+  },
+  {
+    "title": "Fifa 11",
+    "entry": "games/FIFA11/index.html",
+    "cover": "games/FIFA11/cover.png"
+  },
+  {
+    "title": "Backrooms",
+    "entry": "games/Backrooms/index.html",
+    "cover": "games/Backrooms/cover.png"
+  },
+  {
+    "title": "Bitlife",
+    "entry": "games/bitlife/index.html",
+    "cover": "games/bitlife/cover.png"
+  },
+  {
+    "title": "1v1.lol",
+    "entry": "games/1v1/index.html",
+    "cover": "games/1v1/cover.png"
+  },
+  {
+    "title": "Deltarune",
+    "entry": "games/Deltarune/index.html",
+    "cover": "games/Deltarune/cover.png"
+  }
+]
