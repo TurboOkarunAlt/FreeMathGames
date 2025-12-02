@@ -233,5 +233,10 @@
     "title": "Getting Over It with Bennett Foddy",
     "entry": "games/GOIWBF/index.html",
     "cover": "games/GOIWBF/cover.png"
+  },
+  {
+    "title": "Raft",
+    "entry": "games/Raft/index.html",
+    "cover": "games/Raft/cover.png"
   }
 ]
