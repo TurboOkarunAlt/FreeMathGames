@@ -194,7 +194,6 @@
     "entry": "games/1.12.2/index.html",
     "cover": "games/1.12.2/cover.png"
   },
-
   {
     "title": "Henry Stickmin Breaking the Bank",
     "entry": "games/HSBTB/index.html",
@@ -205,7 +204,6 @@
     "entry": "games/HSETP/index.html",
     "cover": "games/HSETP/cover.png"
   },
-
   {
     "title": "Henry Stickmin Flee the Complex",
     "entry": "games/HSFTC/index.html",
@@ -244,4 +242,16 @@
   {
     "title": "Raft",
     "entry": "games/Raft/index.html",
-    "cover": "games
+    "cover": "games/Raft/cover.png"
+  },
+  {
+    "title": "That's Not My Neighbor",
+    "entry": "games/tnmn/index.html",
+    "cover": "games/tnmn/cover.png"
+  },
+  {
+    "title": "Paper.io 2",
+    "entry": "games/paper.io2/index.html",
+    "cover": "games/paper.io2/cover.png"
+  }
+]
