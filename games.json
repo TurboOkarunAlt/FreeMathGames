@@ -243,5 +243,10 @@
     "title": "That's Not My Neighbor",
     "entry": "games/tnmn/index.html",
     "cover": "games/tnmn/cover.png"
+  },
+  {
+    "title": "Paper.io 2",
+    "entry": "games/paper.io2/index.html",
+    "cover": "games/paper.io2/cover.png"
   }
 ]
