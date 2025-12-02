@@ -60,9 +60,9 @@
     "cover": "games/FNAC2/cover.png"
   },
   {
-    "title": "One Bite at Freddy's",
-    "entry": "games/OBAF/index.html",
-    "cover": "games/OBAF/cover.png"
+    "title": "A Bite at Freddy's",
+    "entry": "games/ABAF/index.html",
+    "cover": "games/ABAF/cover.png"
   },
   {
     "title": "Friday Night Funkin'",
