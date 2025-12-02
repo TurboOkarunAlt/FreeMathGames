@@ -238,5 +238,10 @@
     "title": "Raft",
     "entry": "games/Raft/index.html",
     "cover": "games/Raft/cover.png"
+  },
+  {
+    "title": "That's Not My Neighbor",
+    "entry": "games/tnmn/index.html",
+    "cover": "games/tnmn/cover.png"
   }
 ]
