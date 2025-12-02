@@ -51,8 +51,8 @@
   },
   {
     "title": "Five Nights at Candy's",
-    "entry": "games/FNAC/index.html",
-    "cover": "games/FNAC/cover.png"
+    "entry": "games/FNAC1/index.html",
+    "cover": "games/FNAC1/cover.png"
   },
   {
     "title": "Five Nights at Candy's 2",
@@ -60,9 +60,9 @@
     "cover": "games/FNAC2/cover.png"
   },
   {
-    "title": "A Bite at Freddy's",
-    "entry": "games/ABAF/index.html",
-    "cover": "games/ABAF/cover.png"
+    "title": "One Bite at Freddy's",
+    "entry": "games/OBAF/index.html",
+    "cover": "games/OBAF/cover.png"
   },
   {
     "title": "Friday Night Funkin'",
@@ -156,4 +156,77 @@
   },
   {
     "title": "Baldi Basic's Remastered",
-    "entry": "games/BBR
+    "entry": "games/BBR/index.html",
+    "cover": "games/BBR/cover.png"
+  },
+  {
+    "title": "Subway Surfers",
+    "entry": "games/Subwaysurfers/index.html",
+    "cover": "games/Subwaysurfers/cover.png"
+  },
+  {
+    "title": "FIFA 11",
+    "entry": "games/FIFA11/index.html",
+    "cover": "games/FIFA11/cover.png"
+  },
+  {
+    "title": "Backrooms",
+    "entry": "games/Backrooms/index.html",
+    "cover": "games/Backrooms/cover.png"
+  },
+  {
+    "title": "Bitlife",
+    "entry": "games/bitlife/index.html",
+    "cover": "games/bitlife/cover.png"
+  },
+  {
+    "title": "1v1.lol",
+    "entry": "games/1v1/index.html",
+    "cover": "games/1v1/cover.png"
+  },
+  {
+    "title": "Deltarune",
+    "entry": "games/Deltarune/index.html",
+    "cover": "games/Deltarune/cover.png"
+  },
+  {
+    "title": "Minecraft 1.12.2",
+    "entry": "games/1.12.2/index.html",
+    "cover": "games/1.12.2/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Escaping the Prison",
+    "entry": "games/HSETP/index.html",
+    "cover": "games/HSETP/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Flee the Complex",
+    "entry": "games/HSFTC/index.html",
+    "cover": "games/HSFTC/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Stealing the Diamond",
+    "entry": "games/HSSTD/index.html",
+    "cover": "games/HSSTD/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Infiltrating the Airship",
+    "entry": "games/HSITA/index.html",
+    "cover": "games/HSITA/cover.png"
+  },
+  {
+    "title": "R.E.P.O",
+    "entry": "games/repo/index.html",
+    "cover": "games/repo/cover.png"
+  },
+  {
+    "title": "Slender Man The Eight Pages",
+    "entry": "games/slendermanpages/index.html",
+    "cover": "games/slendermanpages/cover.png"
+  },
+  {
+    "title": "We Become What We Behold",
+    "entry": "games/WBWWB/index.html",
+    "cover": "games/WBWWB/cover.png"
+  }
+]
