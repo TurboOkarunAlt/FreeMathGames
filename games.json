@@ -253,15 +253,5 @@
     "title": "Paper.io 2",
     "entry": "games/paper.io2/index.html",
     "cover": "games/paper.io2/cover.png"
-  },
-  {
-    "title": "Crossy Road",
-    "entry": "games/CrossyR/index.html",
-    "cover": "games/CrossyR/cover.png"
-  },
-  {
-    "title": "Minecraft 1.8.8",
-    "entry": "games/MC1.8/index.html",
-    "cover": "games/MC1.8/cover.png"
   }
 ]
