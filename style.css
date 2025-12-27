@@ -184,8 +184,8 @@ body.custom-bg::before {
 }
 
 @keyframes cardPulse {
-  from { transform: translateY(-12px) scale(1.1); }
-  to { transform: translateY(-15px) scale(1.12); }
+  from { transform: translateY(-4px) scale(1.03); }
+  to { transform: translateY(-6px) scale(1.05); }
 }
 
 .game-strip-wrapper::after {
@@ -198,6 +198,14 @@ body.custom-bg::before {
   background: linear-gradient(to top, var(--bg-1), transparent);
   pointer-events: none;
   z-index: 5;
+}
+
+html[data-grid="compact"] .game-card { width: calc(12.5% - 14px); min-width: 60px; }
+html[data-grid="large"] .game-card { width: calc(25% - 14px); min-width: 120px; }
+
+.logo-img {
+  max-height: 40px;
+  object-fit: contain;
 }
 
 .main{display:flex;height:calc(100vh - 72px)}
@@ -249,7 +257,7 @@ body.custom-bg::before {
 @media (max-width:480px){
   .game-card{width:calc(100% - 14px);min-width:60px}
 }
-.game-card-image{width:100%;aspect-ratio:1/1;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.1);transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),box-shadow .22s ease;border:1.5px solid rgba(10,185,230,0)}
+.game-card-image{width:100%;aspect-ratio:1/1;border-radius:20px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.1);transition:transform .22s cubic-bezier(0.34,1.56,0.64,1),box-shadow .22s ease;border:1.5px solid rgba(10,185,230,0);opacity:0.8}
 .game-card-image::after{content:"";position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(10,185,230,0.3),transparent,rgba(255,60,40,0.1));opacity:0;transition:opacity .3s ease;animation:shimmerCard 3s ease-in-out infinite alternate}
 
 @keyframes shimmerCard{
@@ -267,9 +275,9 @@ body.custom-bg::before {
   100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0.1);filter:drop-shadow(0 0 0px rgba(10,185,230,0))}
 }
 
-.game-card:hover .game-card-image{transform:translateY(-12px) scale(1.1);box-shadow:0 20px 60px rgba(10,185,230,0.45),0 0 50px rgba(10,185,230,0.35),0 20px 50px rgba(0,0,0,1),inset 0 1px 0 rgba(255,255,255,0.15);border-color:rgba(10,185,230,0.8)}
+.game-card:hover .game-card-image{transform:translateY(-4px) scale(1.03);box-shadow:0 10px 30px rgba(10,185,230,0.3),0 0 20px rgba(10,185,230,0.2),0 10px 30px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.15);border-color:rgba(10,185,230,0.8);opacity:1}
 .game-card:hover .game-card-image::after{opacity:1;animation:shimmerCard 2s ease-in-out infinite alternate}
-.game-card:hover .game-cover{transform:scale(1.15);filter:brightness(1.2) contrast(1.1)}
+.game-card:hover .game-cover{transform:scale(1.05);filter:brightness(1.1) contrast(1.1)}
 
 @keyframes cardHoverGlow{
   0%,100%{box-shadow:0 25px 70px rgba(10,185,230,0.35),0 0 60px rgba(10,185,230,0.25),0 25px 60px rgba(0,0,0,0.9)}
