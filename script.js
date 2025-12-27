@@ -670,6 +670,53 @@ settingsBtn.addEventListener("click", () => {
   updateSettingsDisplay();
   const colorThemeSelect = document.getElementById("colorThemeSelect");
   if (colorThemeSelect) colorThemeSelect.value = colorTheme;
+  const bgUploadBtn = document.getElementById("bgUploadBtn");
+  if (bgUploadBtn) {
+    bgUploadBtn.onclick = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const bgData = event.target.result;
+            localStorage.setItem("customWallpaper", bgData);
+            applyWallpaper(bgData);
+            showMsg("Wallpaper updated");
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    };
+  }
+
+  function applyWallpaper(data) {
+    if (data) {
+      document.body.classList.add('custom-bg');
+      document.body.style.setProperty('--custom-bg', `url(${data})`);
+    } else {
+      document.body.classList.remove('custom-bg');
+      document.body.style.removeProperty('--custom-bg');
+    }
+  }
+
+  // Initial wallpaper load
+  const savedBg = localStorage.getItem("customWallpaper");
+  if (savedBg) applyWallpaper(savedBg);
+
+  // Add Wallpaper reset to the resetBtn logic
+  const originalReset = resetBtn.onclick;
+  resetBtn.onclick = () => {
+    if (confirm("Reset all settings to default?")) {
+      localStorage.removeItem("customWallpaper");
+      applyWallpaper(null);
+      if (originalReset) originalReset();
+    }
+  };
+
   settingsModal.style.display = "flex";
   playSound('click');
 });
@@ -687,6 +734,9 @@ if (colorThemeSelect) {
 const rgbToggle = document.getElementById("rgbToggle");
 let rgbEnabled = JSON.parse(localStorage.getItem("rgbEnabled")) !== false;
 
+const particlesToggle = document.getElementById("particlesToggle");
+let particlesEnabled = JSON.parse(localStorage.getItem("particlesEnabled")) !== false;
+
 if (rgbToggle) {
   rgbToggle.checked = rgbEnabled;
   document.documentElement.setAttribute("data-rgb", rgbEnabled ? "on" : "off");
@@ -698,6 +748,43 @@ if (rgbToggle) {
     showMsg(rgbEnabled ? "RGB Border enabled" : "RGB Border disabled");
   };
 }
+
+if (particlesToggle) {
+  particlesToggle.checked = particlesEnabled;
+  particlesToggle.onchange = () => {
+    particlesEnabled = particlesToggle.checked;
+    localStorage.setItem("particlesEnabled", particlesEnabled);
+    showMsg(particlesEnabled ? "Particles enabled" : "Particles disabled");
+  };
+}
+
+// Particle system
+document.addEventListener('mousemove', (e) => {
+  if (!particlesEnabled) return;
+  if (Math.random() > 0.15) return;
+
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 2;
+  p.style.width = size + 'px';
+  p.style.height = size + 'px';
+  p.style.left = e.clientX + 'px';
+  p.style.top = e.clientY + 'px';
+  
+  const tx = (Math.random() - 0.5) * 100;
+  const ty = (Math.random() - 0.5) * 100;
+  p.style.setProperty('--tx', tx + 'px');
+  p.style.setProperty('--ty', ty + 'px');
+  p.style.setProperty('--scale', Math.random() * 0.5 + 0.5);
+  
+  // Match current accent color
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  p.style.background = accent || '#0ab9e6';
+  p.style.boxShadow = `0 0 10px ${accent || '#0ab9e6'}`;
+
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 2000);
+});
 
 function renderFavoritesBar() {
   const favBar = document.getElementById("favoritesBar");
