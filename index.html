@@ -48,6 +48,7 @@
       <div class="player-toolbar">
         <button id="backBtn" class="toolbar-btn">Home</button>
         <button id="fullscreenBtn" class="toolbar-btn">Fullscreen</button>
+        <button id="externalBtn" class="toolbar-btn">Open In New Tab</button>
         <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:20px;">
           <div style="font-size:0.9rem;color:var(--muted);" id="gameTitle">Game</div>
           <div style="font-size:0.85rem;color:var(--accent);font-weight:600;" id="sessionTimer">00:00</div>
@@ -155,6 +156,13 @@
           <div class="settings-label">🚀 Auto-Play on Launch</div>
           <label class="toggle-switch">
             <input type="checkbox" id="autoPlayToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-option">
+          <div class="settings-label">🌈 RGB Border</div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="rgbToggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
