@@ -132,9 +132,20 @@ function updateTabCloak() {
 // Update clock every second
 function updateClock() {
   const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
+  let hours = now.getHours();
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  clockEl.textContent = hours + ':' + minutes;
+  let ampm = "";
+  
+  const use24Hour = JSON.parse(localStorage.getItem("use24Hour")) || false;
+  
+  if (!use24Hour) {
+    ampm = (hours >= 12 ? " PM" : " AM");
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+  }
+  
+  const hourStr = String(hours).padStart(2, '0');
+  clockEl.textContent = hourStr + ':' + minutes + ampm;
 }
 updateClock();
 setInterval(updateClock, 1000);
@@ -709,15 +720,78 @@ settingsBtn.addEventListener("click", () => {
   const savedBg = localStorage.getItem("customWallpaper");
   if (savedBg) applyWallpaper(savedBg);
 
-  // Add Wallpaper reset to the resetBtn logic
+  const logoUploadBtn = document.getElementById("logoUploadBtn");
+  if (logoUploadBtn) {
+    logoUploadBtn.onclick = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const logoData = event.target.result;
+            localStorage.setItem("customLogo", logoData);
+            applyLogo(logoData);
+            showMsg("Logo updated");
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    };
+  }
+
+  function applyLogo(data) {
+    const logoContainer = document.querySelector(".logo");
+    if (data) {
+      logoContainer.innerHTML = `<img src="${data}" class="logo-img" alt="Aurora">`;
+    } else {
+      logoContainer.textContent = "Aurora";
+    }
+  }
+
+  // Initial logo load
+  const savedLogo = localStorage.getItem("customLogo");
+  if (savedLogo) applyLogo(savedLogo);
+
+  // Add Logo reset to the resetBtn logic
   const originalReset = resetBtn.onclick;
   resetBtn.onclick = () => {
     if (confirm("Reset all settings to default?")) {
       localStorage.removeItem("customWallpaper");
+      localStorage.removeItem("customLogo");
       applyWallpaper(null);
+      applyLogo(null);
       if (originalReset) originalReset();
     }
   };
+
+  const gridSizeSelect = document.getElementById("gridSizeSelect");
+  let gridSize = localStorage.getItem("gridSize") || "normal";
+  if (gridSizeSelect) {
+    gridSizeSelect.value = gridSize;
+    document.documentElement.setAttribute("data-grid", gridSize);
+    gridSizeSelect.onchange = () => {
+      gridSize = gridSizeSelect.value;
+      localStorage.setItem("gridSize", gridSize);
+      document.documentElement.setAttribute("data-grid", gridSize);
+      showMsg("Grid size: " + gridSize);
+    };
+  }
+
+  const hourFormatToggle = document.getElementById("hourFormatToggle");
+  let use24Hour = JSON.parse(localStorage.getItem("use24Hour")) || false;
+  if (hourFormatToggle) {
+    hourFormatToggle.checked = use24Hour;
+    hourFormatToggle.onchange = () => {
+      use24Hour = hourFormatToggle.checked;
+      localStorage.setItem("use24Hour", use24Hour);
+      updateClock();
+      showMsg(use24Hour ? "24-hour clock enabled" : "12-hour clock enabled");
+    };
+  }
 
   settingsModal.style.display = "flex";
   playSound('click');
