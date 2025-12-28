@@ -704,6 +704,7 @@ settingsBtn.addEventListener("click", () => {
   const colorThemeSelect = document.getElementById("colorThemeSelect");
   if (colorThemeSelect) colorThemeSelect.value = colorTheme;
   const bgUploadBtn = document.getElementById("bgUploadBtn");
+  const bgResetBtn = document.getElementById("bgResetBtn");
   if (bgUploadBtn) {
     bgUploadBtn.onclick = () => {
       const input = document.createElement('input');
@@ -726,6 +727,13 @@ settingsBtn.addEventListener("click", () => {
     };
   }
 
+  if (bgResetBtn) {
+    bgResetBtn.onclick = () => {
+      applyWallpaper(null);
+      showMsg("Wallpaper reset");
+    };
+  }
+
   function applyWallpaper(data) {
     if (data) {
       document.body.classList.add('custom-bg');
@@ -743,6 +751,7 @@ settingsBtn.addEventListener("click", () => {
   if (savedBg) applyWallpaper(savedBg);
 
   const logoUploadBtn = document.getElementById("logoUploadBtn");
+  const logoResetBtn = document.getElementById("logoResetBtn");
   if (logoUploadBtn) {
     logoUploadBtn.onclick = () => {
       const input = document.createElement('input');
@@ -762,6 +771,14 @@ settingsBtn.addEventListener("click", () => {
         }
       };
       input.click();
+    };
+  }
+
+  if (logoResetBtn) {
+    logoResetBtn.onclick = () => {
+      localStorage.removeItem("customLogo");
+      applyLogo(null);
+      showMsg("Logo reset");
     };
   }
 
