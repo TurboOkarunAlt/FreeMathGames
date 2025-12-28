@@ -149,8 +149,27 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
-initTheme();
-updateTabCloak();
+const backToTopBtn = document.getElementById("backToTopBtn");
+if (backToTopBtn) {
+  gameStrip.onscroll = () => {
+    if (gameStrip.scrollTop > 300) {
+      backToTopBtn.style.display = "flex";
+    } else {
+      backToTopBtn.style.display = "none";
+    }
+  };
+  backToTopBtn.onclick = () => {
+    gameStrip.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'f') {
+    e.preventDefault();
+    searchInput.focus();
+    showMsg("Search focus");
+  }
+});
 
 // Create a visible debug message box
 const debug = document.createElement("div");
@@ -237,6 +256,9 @@ function filterAndRenderGames() {
     filtered = filtered.filter(g => favorites.includes(g.title));
   } else if (sortBy === "alphabetical") {
     filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortBy.startsWith("genre-")) {
+    const genre = sortBy.replace("genre-", "");
+    filtered = filtered.filter(g => g.genre && g.genre.toLowerCase() === genre);
   }
 
   renderGames(filtered);
