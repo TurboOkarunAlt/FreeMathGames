@@ -84,8 +84,15 @@ function playSound(type) {
       osc.type = 'sine';
       gain.gain.setValueAtTime(0.1, now);
       gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+      gain.start(now);
+      gain.stop(now + 0.1);
+    } else if (type === 'hover') {
+      osc.frequency.value = 800;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
       osc.start(now);
-      osc.stop(now + 0.1);
+      osc.stop(now + 0.05);
     } else if (type === 'launch') {
       osc.frequency.setValueAtTime(400, now);
       osc.frequency.exponentialRampToValueAtTime(800, now + 0.3);
@@ -135,15 +142,15 @@ function updateClock() {
   let hours = now.getHours();
   const minutes = String(now.getMinutes()).padStart(2, '0');
   let ampm = "";
-  
+
   const use24Hour = JSON.parse(localStorage.getItem("use24Hour")) || false;
-  
+
   if (!use24Hour) {
     ampm = (hours >= 12 ? " PM" : " AM");
     hours = hours % 12;
     hours = hours ? hours : 12;
   }
-  
+
   const hourStr = String(hours).padStart(2, '0');
   clockEl.textContent = hourStr + ':' + minutes + ampm;
 }
@@ -255,7 +262,7 @@ function filterAndRenderGames() {
   } else if (sortBy === "favorites") {
     filtered = filtered.filter(g => favorites.includes(g.title));
   } else if (sortBy === "alphabetical") {
-    filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+    filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title));
   } else if (sortBy.startsWith("genre-")) {
     const genre = sortBy.replace("genre-", "");
     filtered = filtered.filter(g => g.genre && g.genre.toLowerCase() === genre);
@@ -266,6 +273,7 @@ function filterAndRenderGames() {
 
 function renderGames(games) {
   gameStrip.innerHTML = "";
+  currentGameIndex = 0; // Reset nav index on render
 
   if (games.length === 0) {
     const empty = document.createElement("div");
@@ -301,18 +309,19 @@ function renderGames(games) {
     cardDiv.onmouseenter = () => {
       document.querySelectorAll('.game-card.active').forEach(c => c.classList.remove('active'));
       cardDiv.classList.add('active');
+      playSound('hover');
     };
 
     if (!g.entry) {
       cardDiv.style.opacity = "0.5";
     }
 
-    const playtime = playtimeData[g.title] || 0;
-    if (playtime > 0) {
+    if (playtimeData[g.title] > 0) {
       const badge = document.createElement('div');
       badge.className = 'stat-badge';
-      badge.textContent = playtime.toFixed(1) + 'h';
-      cardDiv.querySelector('.game-card-image').appendChild(badge);
+      badge.textContent = playtimeData[g.title].toFixed(1) + 'h';
+      const imgContainer = cardDiv.querySelector('.game-card-image');
+      if (imgContainer) imgContainer.appendChild(badge);
     }
 
     gameStrip.appendChild(card);
@@ -539,12 +548,11 @@ importBtn.onchange = (e) => {
 
 function updateStats() {
   const playableCount = allGames.filter(g => g.entry).length;
-  statsTotal.textContent = allGames.length;
-  statsPlayable.textContent = playableCount;
-  statsFav.textContent = favorites.length;
-  favCount.textContent = favorites.length;
-  modeDisplay.textContent = currentTheme === "dark" ? "Dark" : "Light";
-  statsDisplay.textContent = allGames.length + " | " + playableCount + " | " + favorites.length;
+  if (statsTotal) statsTotal.textContent = allGames.length;
+  if (statsPlayable) statsPlayable.textContent = playableCount;
+  if (statsFav) statsFav.textContent = favorites.length;
+  if (favCount) favCount.textContent = favorites.length;
+  if (modeDisplay) modeDisplay.textContent = currentTheme === "dark" ? "Dark" : "Light";
 }
 
 function openSettings() {
@@ -784,6 +792,7 @@ settingsBtn.addEventListener("click", () => {
 
   function applyLogo(data) {
     const logoContainer = document.querySelector(".logo");
+    if (!logoContainer) return;
     if (data) {
       logoContainer.innerHTML = `<img src="${data}" class="logo-img" alt="Aurora">`;
     } else {
@@ -855,7 +864,7 @@ let particlesEnabled = JSON.parse(localStorage.getItem("particlesEnabled")) !== 
 if (rgbToggle) {
   rgbToggle.checked = rgbEnabled;
   document.documentElement.setAttribute("data-rgb", rgbEnabled ? "on" : "off");
-  
+
   rgbToggle.onchange = () => {
     rgbEnabled = rgbToggle.checked;
     localStorage.setItem("rgbEnabled", rgbEnabled);
@@ -873,32 +882,37 @@ if (particlesToggle) {
   };
 }
 
-// Particle system
+// Enhanced Particle System
+let lastParticleTime = 0;
 document.addEventListener('mousemove', (e) => {
   if (!particlesEnabled) return;
-  if (Math.random() > 0.15) return;
+  const now = Date.now();
+  if (now - lastParticleTime > 20) {
+    lastParticleTime = now;
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = e.clientX + 'px';
+    p.style.top = e.clientY + 'px';
 
-  const p = document.createElement('div');
-  p.className = 'particle';
-  const size = Math.random() * 4 + 2;
-  p.style.width = size + 'px';
-  p.style.height = size + 'px';
-  p.style.left = e.clientX + 'px';
-  p.style.top = e.clientY + 'px';
-  
-  const tx = (Math.random() - 0.5) * 100;
-  const ty = (Math.random() - 0.5) * 100;
-  p.style.setProperty('--tx', tx + 'px');
-  p.style.setProperty('--ty', ty + 'px');
-  p.style.setProperty('--scale', Math.random() * 0.5 + 0.5);
-  
-  // Match current accent color
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-  p.style.background = accent || '#0ab9e6';
-  p.style.boxShadow = `0 0 10px ${accent || '#0ab9e6'}`;
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 50;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
 
-  document.body.appendChild(p);
-  setTimeout(() => p.remove(), 2000);
+    p.style.setProperty('--tx', tx + 'px');
+    p.style.setProperty('--ty', ty + 'px');
+    p.style.setProperty('--scale', Math.random() * 0.5 + 0.5);
+
+    // Match current accent color via CSS variable
+    p.style.background = 'var(--accent)';
+    p.style.boxShadow = `0 0 10px var(--accent)`;
+
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2000);
+  }
 });
 
 function renderFavoritesBar() {
@@ -947,37 +961,8 @@ document.addEventListener('keydown', (e) => {
 
 resetBtn.onclick = () => {
   if (confirm("Reset all settings to default? This will:\n- Clear favorites\n- Reset theme to dark\n- Enable sound\n- Disable tab cloak\n- Clear uploaded favicon\n- Clear recent history")) {
-    favorites = [];
-    currentTheme = "dark";
-    soundEnabled = true;
-    cloakEnabled = false;
-    cloakName = "Google Classroom";
-    uploadedFaviconImage = null;
-    animationsEnabled = true;
-    timerEnabled = true;
-    autoPlayEnabled = false;
-    recentlyPlayed = [];
-    playtimeData = {};
     localStorage.clear();
-    document.documentElement.setAttribute("data-theme", "dark");
-    soundToggle.checked = true;
-    darkModeToggle.checked = false;
-    cloakToggle.checked = false;
-    if (animationsToggle) animationsToggle.checked = true;
-    if (timerToggle) timerToggle.checked = true;
-    if (autoPlayToggle) autoPlayToggle.checked = false;
-    cloakNameInput.value = "Google Classroom";
-    cloakInputContainer.style.display = "none";
-    favCount.textContent = "0";
-    updateFavicon();
-    updateTabCloak();
-    updateStats();
-    updatePlaytimeDisplay();
-    localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));
-    localStorage.setItem("playtimeData", JSON.stringify(playtimeData));
-    updateSettingsDisplay();
-    showMsg("All settings reset");
-    filterAndRenderGames();
+    location.reload(); // Hard reset is safest to clear all memory states
   }
 };
 
@@ -1023,28 +1008,7 @@ if (scrollRightBtn) {
   };
 }
 
-// Enhanced Cursor Trail Particles
-let lastParticleTime = 0;
-document.addEventListener('mousemove', (e) => {
-  const now = Date.now();
-  if (now - lastParticleTime > 15) {
-    lastParticleTime = now;
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 40 + Math.random() * 60;
-    const tx = Math.cos(angle) * distance;
-    const ty = Math.sin(angle) * distance;
-    particle.style.setProperty('--tx', tx + 'px');
-    particle.style.setProperty('--ty', ty + 'px');
-    particle.style.left = e.clientX + 'px';
-    particle.style.top = e.clientY + 'px';
-    const scale = 0.6 + Math.random() * 0.8;
-    particle.style.setProperty('--scale', scale);
-    document.body.appendChild(particle);
-    setTimeout(() => particle.remove(), 2000);
-  }
-});
+// Remove duplicate particle and keyboard listeners below
 
 // Konami Code Easter Egg
 let konamiCode = [];
@@ -1070,34 +1034,39 @@ function triggerKonamiMode() {
   }, 800);
 }
 
-// Keyboard Navigation Improvements
+
+// Start loading when page opens
+loadGames();
+
+// Enhanced Keyboard Navigation
 let currentGameIndex = 0;
 document.addEventListener('keydown', (e) => {
+  const cards = document.querySelectorAll('.game-card');
+  if (cards.length === 0) return;
+
   if (e.key === 'ArrowRight') {
-    const cards = document.querySelectorAll('.game-card');
-    if (cards.length > 0) {
-      currentGameIndex = (currentGameIndex + 1) % cards.length;
-      const card = cards[currentGameIndex];
-      card.focus();
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-      card.dispatchEvent(new MouseEvent('mouseenter'));
-    }
+    currentGameIndex = (currentGameIndex + 1) % cards.length;
+    updateFocusedCard(cards);
   } else if (e.key === 'ArrowLeft') {
-    const cards = document.querySelectorAll('.game-card');
-    if (cards.length > 0) {
-      currentGameIndex = (currentGameIndex - 1 + cards.length) % cards.length;
-      const card = cards[currentGameIndex];
-      card.focus();
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-      card.dispatchEvent(new MouseEvent('mouseenter'));
-    }
+    currentGameIndex = (currentGameIndex - 1 + cards.length) % cards.length;
+    updateFocusedCard(cards);
   } else if (e.key === 'Enter') {
     const activeCard = document.querySelector('.game-card.active');
-    if (activeCard) {
+    if (activeCard && playerSection.style.display === "none") {
       activeCard.click();
+      if (selectedGameEntry) launchGame();
     }
   }
 });
 
-// Start loading when page opens
-loadGames();
+function updateFocusedCard(cards) {
+  cards.forEach(c => c.classList.remove('active'));
+  const card = cards[currentGameIndex];
+  if (card) {
+    card.classList.add('active');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    const title = card.querySelector('.game-title').textContent;
+    const game = allGames.find(g => g.title === title);
+    if (game) selectGame(game, allGames.indexOf(game));
+  }
+}
