@@ -278,6 +278,11 @@
     "title": "Superhot",
     "entry": "games/Superhot/index.html",
     "cover": "games/Superhot/cover.png"
+  },
+  {
+    "title": "HALT (Exclusive)",
+    "entry": "games/HALT/index.html",
+    "cover": "games/HALT/cover.png"
   }
 ]
 
