@@ -283,6 +283,11 @@
     "title": "HALT (Exclusive)",
     "entry": "games/HALT/index.html",
     "cover": "games/HALT/cover.png"
+  },
+  {
+    "title": "Scary Teacher 3D",
+    "entry": "games/ST3D/index.html",
+    "cover": "games/ST3D/cover.png"
   }
 ]
 
