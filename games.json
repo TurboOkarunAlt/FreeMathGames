@@ -298,6 +298,11 @@
     "title": "The Impossible Quiz 2",
     "entry": "games/TIQ2/index.html",
     "cover": "games/TIQ2/cover.png"
+  },
+  {
+    "title": "Whack The Creeps",
+    "entry": "games/WTC/index.html",
+    "cover": "games/WTC/cover.png"
   }
 ]
 
