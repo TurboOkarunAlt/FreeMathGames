@@ -288,6 +288,11 @@
     "title": "Scary Teacher 3D",
     "entry": "games/ST3D/index.html",
     "cover": "games/ST3D/cover.png"
+  },
+  {
+    "title": "The Impossible Quiz",
+    "entry": "games/TIQ/index.html",
+    "cover": "games/TIQ/cover.png"
   }
 ]
 
