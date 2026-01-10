@@ -159,7 +159,7 @@ setInterval(updateClock, 1000);
 const backToTopBtn = document.getElementById("backToTopBtn");
 if (backToTopBtn) {
   gameStrip.onscroll = () => {
-    if (gameStrip.scrollTop > 300) {
+    if (gameStrip.scrollTop > 300 && playerSection.style.display === "none") {
       backToTopBtn.style.display = "flex";
     } else {
       backToTopBtn.style.display = "none";
@@ -382,6 +382,7 @@ function launchGame() {
   playSound('launch');
   homeSection.style.display = "none";
   playerSection.style.display = "flex";
+  if (backToTopBtn) backToTopBtn.style.display = "none";
   gameFrame.src = selectedGameEntry;
   gameTitle.textContent = selectedGameTitle;
   addToRecentlyPlayed(selectedGameTitle);
@@ -417,8 +418,9 @@ backBtn.onclick = () => {
   gameFrame.src = "";
   playerSection.style.display = "none";
   homeSection.style.display = "flex";
+  if (backToTopBtn) gameStrip.onscroll();
   showMsg("Home");
-  
+
   // Remove game ID from URL
   const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
   window.history.pushState({ path: newUrl }, '', newUrl);
