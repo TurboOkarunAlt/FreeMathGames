@@ -1,4 +1,5 @@
-
+// Aurora Game Loader – No DevTools Needed
+// All errors + status will appear on screen
 
 const gameStrip = document.getElementById("gameStrip");
 const gameFrame = document.getElementById("gameFrame");
@@ -194,6 +195,8 @@ debug.style.border = "1px solid rgba(10,185,230,0.3)";
 debug.style.boxShadow = "0 8px 24px rgba(0,0,0,0.6)";
 debug.style.animation = "slideInLeft 0.3s ease";
 debug.style.fontWeight = "500";
+debug.style.opacity = "0";
+debug.style.transition = "opacity 0.3s ease";
 document.body.appendChild(debug);
 
 let msgTimeout;
@@ -202,7 +205,7 @@ function showMsg(msg) {
   debug.style.opacity = "1";
   clearTimeout(msgTimeout);
   msgTimeout = setTimeout(() => {
-    debug.style.opacity = "0.6";
+    debug.style.opacity = "0";
   }, 3000);
 }
 
