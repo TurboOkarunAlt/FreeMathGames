@@ -1,5 +1,4 @@
-// Aurora Game Loader – No DevTools Needed
-// All errors + status will appear on screen
+
 
 const gameStrip = document.getElementById("gameStrip");
 const gameFrame = document.getElementById("gameFrame");
