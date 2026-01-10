@@ -199,41 +199,6 @@ function updateTabCloak() {
   }
 }
 
-const navHome = document.getElementById("navHome");
-const navRecent = document.getElementById("navRecent");
-const navFavorites = document.getElementById("navFavorites");
-
-if (navHome) {
-  navHome.onclick = (e) => {
-    e.preventDefault();
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    navHome.classList.add('active');
-    sortSelect.value = "default";
-    searchInput.value = "";
-    filterAndRenderGames();
-    backBtn.click();
-  };
-}
-
-if (navRecent) {
-  navRecent.onclick = (e) => {
-    e.preventDefault();
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    navRecent.classList.add('active');
-    recentBtn.click();
-  };
-}
-
-if (navFavorites) {
-  navFavorites.onclick = (e) => {
-    e.preventDefault();
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    navFavorites.classList.add('active');
-    sortSelect.value = "favorites";
-    filterAndRenderGames();
-    backBtn.click();
-  };
-}
 function updateClock() {
   const now = new Date();
   let hours = now.getHours();
