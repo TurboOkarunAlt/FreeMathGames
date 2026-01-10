@@ -6,6 +6,7 @@ const gameFrame = document.getElementById("gameFrame");
 const playerSection = document.getElementById("playerSection");
 const homeSection = document.querySelector(".home");
 const backBtn = document.getElementById("backBtn");
+const refreshBtn = document.getElementById("refreshBtn");
 const fullscreenBtn = document.getElementById("fullscreenBtn");
 const externalBtn = document.getElementById("externalBtn");
 const clockEl = document.getElementById("clock");
@@ -32,6 +33,7 @@ const favCount = document.getElementById("favCount");
 let selectedGameEntry = null;
 let selectedGameTitle = null;
 let selectedGameIndex = null;
+let currentGameIndex = 0;
 let allGames = [];
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 let currentTheme = localStorage.getItem("theme") || "dark";
@@ -107,10 +109,71 @@ function playSound(type) {
   }
 }
 
-// Initialize theme
+// Initialize theme and settings
 function initTheme() {
   document.documentElement.setAttribute("data-theme", currentTheme);
   document.documentElement.setAttribute("data-color-theme", colorTheme);
+  
+  // Apply background
+  const savedBg = localStorage.getItem("customWallpaper");
+  if (savedBg) applyWallpaper(savedBg);
+
+  // Apply logo
+  const savedLogo = localStorage.getItem("customLogo");
+  if (savedLogo) applyLogo(savedLogo);
+
+  // Apply grid size
+  const savedGrid = localStorage.getItem("gridSize") || "normal";
+  document.documentElement.setAttribute("data-grid", savedGrid);
+  if (document.getElementById("gridSizeSelect")) {
+    document.getElementById("gridSizeSelect").value = savedGrid;
+  }
+
+  // Apply RGB border
+  const rgbEnabled = JSON.parse(localStorage.getItem("rgbEnabled")) !== false;
+  document.documentElement.setAttribute("data-rgb", rgbEnabled ? "on" : "off");
+  if (document.getElementById("rgbToggle")) {
+    document.getElementById("rgbToggle").checked = rgbEnabled;
+  }
+
+  // Apply animations
+  if (animationsToggle) {
+    animationsToggle.checked = animationsEnabled;
+    document.body.style.animation = animationsEnabled ? "" : "none";
+  }
+
+  // Apply timer
+  if (timerToggle) {
+    timerToggle.checked = timerEnabled;
+    sessionTimer.style.display = timerEnabled ? "block" : "none";
+  }
+
+  // Apply auto-play
+  if (autoPlayToggle) {
+    autoPlayToggle.checked = autoPlayEnabled;
+  }
+}
+
+function applyWallpaper(data) {
+  if (data) {
+    document.body.classList.add('custom-bg');
+    document.body.style.setProperty('--custom-bg', `url(${data})`);
+    localStorage.setItem("customWallpaper", data);
+  } else {
+    document.body.classList.remove('custom-bg');
+    document.body.style.removeProperty('--custom-bg');
+    localStorage.removeItem("customWallpaper");
+  }
+}
+
+function applyLogo(data) {
+  const logoContainer = document.querySelector(".logo");
+  if (!logoContainer) return;
+  if (data) {
+    logoContainer.innerHTML = `<img src="${data}" class="logo-img" alt="Aurora">`;
+  } else {
+    logoContainer.textContent = "Aurora";
+  }
 }
 
 function toggleTheme() {
@@ -248,10 +311,13 @@ async function loadGames() {
     const urlParams = new URLSearchParams(window.location.search);
     const gameId = urlParams.get('game');
     if (gameId) {
-      const game = allGames.find(g => g.title.toLowerCase().replace(/\s+/g, '-') === gameId);
-      if (game && game.entry) {
-        selectGame(game, allGames.indexOf(game));
-        launchGame();
+      const gameIdx = parseInt(gameId) - 1;
+      if (gameIdx >= 0 && gameIdx < allGames.length) {
+        const game = allGames[gameIdx];
+        if (game && game.entry) {
+          selectGame(game, gameIdx);
+          launchGame();
+        }
       }
     }
   } catch (e) {
@@ -315,7 +381,7 @@ function renderGames(games) {
     const cardDiv = card.querySelector(".game-card");
     cardDiv.dataset.index = idx;
     cardDiv.onclick = () => {
-      const gameId = g.title.toLowerCase().replace(/\s+/g, '-');
+      const gameId = allGames.indexOf(g) + 1;
       const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?game=' + gameId;
       window.history.pushState({ path: newUrl }, '', newUrl);
       selectGame(g, allGames.indexOf(g));
@@ -412,40 +478,64 @@ function updateSessionTimer() {
   }
 }
 
-backBtn.onclick = () => {
-  playSound('click');
-  updatePlaytime(selectedGameTitle);
-  if (sessionTimerInterval) clearInterval(sessionTimerInterval);
-  sessionStartTime = null;
-  gameFrame.src = "";
-  playerSection.style.display = "none";
-  homeSection.style.display = "flex";
-  if (backToTopBtn) gameStrip.onscroll();
-  showMsg("Home");
+if (backBtn) {
+  backBtn.onclick = () => {
+    playSound('click');
+    updatePlaytime(selectedGameTitle);
+    if (sessionTimerInterval) clearInterval(sessionTimerInterval);
+    sessionStartTime = null;
+    gameFrame.src = "";
+    playerSection.style.display = "none";
+    homeSection.style.display = "flex";
+    if (backToTopBtn) gameStrip.onscroll();
+    showMsg("Home");
 
-  // Remove game ID from URL
-  const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-  window.history.pushState({ path: newUrl }, '', newUrl);
-};
+    // Remove game ID from URL
+    const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+  };
+}
 
-fullscreenBtn.onclick = () => {
-  playSound('click');
-  if (gameFrame.requestFullscreen) {
-    gameFrame.requestFullscreen().catch(err => showMsg("Fullscreen not available"));
-  } else {
-    showMsg("Fullscreen not supported");
-  }
-};
+if (fullscreenBtn) {
+  fullscreenBtn.onclick = () => {
+    playSound('click');
+    if (gameFrame.requestFullscreen) {
+      gameFrame.requestFullscreen().catch(err => showMsg("Fullscreen not available"));
+    } else {
+      showMsg("Fullscreen not supported");
+    }
+  };
+}
 
-externalBtn.onclick = () => {
-  playSound('click');
-  if (selectedGameEntry) {
-    window.open(selectedGameEntry, '_blank');
-    showMsg("Opening in new tab...");
-  } else {
-    showMsg("No game selected");
-  }
-};
+if (refreshBtn) {
+  refreshBtn.onclick = (e) => {
+    e.preventDefault();
+    playSound('click');
+    if (gameFrame.src) {
+      const current = gameFrame.src;
+      gameFrame.src = "";
+      setTimeout(() => {
+        gameFrame.src = current;
+      }, 50);
+      showMsg("Game refreshed");
+    } else if (selectedGameEntry) {
+      gameFrame.src = selectedGameEntry;
+      showMsg("Game loaded");
+    }
+  };
+}
+
+if (externalBtn) {
+  externalBtn.onclick = () => {
+    playSound('click');
+    if (selectedGameEntry) {
+      window.open(selectedGameEntry, '_blank');
+      showMsg("Opening in new tab...");
+    } else {
+      showMsg("No game selected");
+    }
+  };
+}
 
 randomBtn.onclick = () => {
   playSound('click');
@@ -764,22 +854,6 @@ settingsBtn.addEventListener("click", () => {
     };
   }
 
-  function applyWallpaper(data) {
-    if (data) {
-      document.body.classList.add('custom-bg');
-      document.body.style.setProperty('--custom-bg', `url(${data})`);
-      localStorage.setItem("customWallpaper", data);
-    } else {
-      document.body.classList.remove('custom-bg');
-      document.body.style.removeProperty('--custom-bg');
-      localStorage.removeItem("customWallpaper");
-    }
-  }
-
-  // Initial wallpaper load
-  const savedBg = localStorage.getItem("customWallpaper");
-  if (savedBg) applyWallpaper(savedBg);
-
   const logoUploadBtn = document.getElementById("logoUploadBtn");
   const logoResetBtn = document.getElementById("logoResetBtn");
   if (logoUploadBtn) {
@@ -811,20 +885,6 @@ settingsBtn.addEventListener("click", () => {
       showMsg("Logo reset");
     };
   }
-
-  function applyLogo(data) {
-    const logoContainer = document.querySelector(".logo");
-    if (!logoContainer) return;
-    if (data) {
-      logoContainer.innerHTML = `<img src="${data}" class="logo-img" alt="Aurora">`;
-    } else {
-      logoContainer.textContent = "Aurora";
-    }
-  }
-
-  // Initial logo load
-  const savedLogo = localStorage.getItem("customLogo");
-  if (savedLogo) applyLogo(savedLogo);
 
   // Add Logo reset to the resetBtn logic
   const originalReset = resetBtn.onclick;
@@ -1020,13 +1080,13 @@ const scrollRightBtn = document.getElementById('scrollRightBtn');
 
 if (scrollLeftBtn) {
   scrollLeftBtn.onclick = () => {
-    gameStrip.scrollLeft -= 300;
+    if (gameStrip) gameStrip.scrollLeft -= 300;
   };
 }
 
 if (scrollRightBtn) {
   scrollRightBtn.onclick = () => {
-    gameStrip.scrollLeft += 300;
+    if (gameStrip) gameStrip.scrollLeft += 300;
   };
 }
 
@@ -1061,7 +1121,6 @@ function triggerKonamiMode() {
 loadGames();
 
 // Enhanced Keyboard Navigation
-let currentGameIndex = 0;
 document.addEventListener('keydown', (e) => {
   const cards = document.querySelectorAll('.game-card');
   if (cards.length === 0) return;
