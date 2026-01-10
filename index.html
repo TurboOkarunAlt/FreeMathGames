@@ -15,11 +15,15 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">Aurora</div>
+      <nav class="header-nav">
+        <a href="#" class="nav-link active" id="navHome">Home</a>
+        <a href="#" class="nav-link" id="navRecent">Recent</a>
+        <a href="#" class="nav-link" id="navFavorites">Favorites</a>
+      </nav>
     </div>
     <div class="header-right">
       <div id="clock" class="stats-display" title="Current time">00:00</div>
       <div id="playtime-display" class="stats-display" title="Total playtime">-- h</div>
-      <button id="recentBtn" class="icon-btn" title="Recently Played">R</button>
       <button id="helpBtn" class="icon-btn" title="Help & Shortcuts">?</button>
       <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
     </div>
@@ -53,9 +57,10 @@
     <!-- GAME PLAYER -->
     <section class="player" id="playerSection" style="display:none;">
       <div class="player-toolbar">
-        <button id="backBtn" class="toolbar-btn">Home</button>
-        <button id="fullscreenBtn" class="toolbar-btn">Fullscreen</button>
-        <button id="externalBtn" class="toolbar-btn">Open In New Tab</button>
+        <button id="backBtn" class="toolbar-btn" type="button">Home</button>
+        <button id="refreshBtn" class="toolbar-btn" type="button">Refresh</button>
+        <button id="fullscreenBtn" class="toolbar-btn" type="button">Fullscreen</button>
+        <button id="externalBtn" class="toolbar-btn" type="button">Open In New Tab</button>
         <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:20px;">
           <div style="font-size:0.9rem;color:var(--muted);" id="gameTitle">Game</div>
           <div style="font-size:0.85rem;color:var(--accent);font-weight:600;" id="sessionTimer">00:00</div>
