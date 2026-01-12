@@ -1,0 +1,318 @@
+[
+  {
+    "title": "Baldi's Classic Remaster",
+    "entry": "games/baldi/index.html",
+    "cover": "games/baldi/cover.png"
+  },
+  {
+    "title": "Bendy and the Ink Machine",
+    "entry": "games/bendy/index.html",
+    "cover": "games/bendy/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's",
+    "entry": "games/FNAF1/index.html",
+    "cover": "games/FNAF1/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's 2",
+    "entry": "games/FNAF2/index.html",
+    "cover": "games/FNAF2/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's 3",
+    "entry": "games/FNAF3/index.html",
+    "cover": "games/FNAF3/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's 4",
+    "entry": "games/FNAF4/index.html",
+    "cover": "games/FNAF4/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's Pizzeria Simulator",
+    "entry": "games/FNAFPS/index.html",
+    "cover": "games/FNAFPS/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's Sister Location",
+    "entry": "games/FNAFSL/index.html",
+    "cover": "games/FNAFSL/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's Ultimate Custom Night",
+    "entry": "games/FNAFUCN/index.html",
+    "cover": "games/FNAFUCN/cover.png"
+  },
+  {
+    "title": "Five Nights at Freddy's World",
+    "entry": "games/FNAFWORLD/index.html",
+    "cover": "games/FNAFWORLD/cover.png"
+  },
+  {
+    "title": "Five Nights at Candy's",
+    "entry": "games/FNAC/index.html",
+    "cover": "games/FNAC/cover.png"
+  },
+  {
+    "title": "Five Nights at Candy's 2",
+    "entry": "games/FNAC2/index.html",
+    "cover": "games/FNAC2/cover.png"
+  },
+  {
+    "title": "A Bite at Freddy's",
+    "entry": "games/ABAF/index.html",
+    "cover": "games/ABAF/cover.png"
+  },
+  {
+    "title": "Friday Night Funkin'",
+    "entry": "games/FNF/index.html",
+    "cover": "games/FNF/cover.png"
+  },
+  {
+    "title": "Friday Night Funkin' Indie Cross",
+    "entry": "games/IndieCross/index.html",
+    "cover": "games/IndieCross/cover.png"
+  },
+  {
+    "title": "Geometry Dash Lite",
+    "entry": "games/GDL/index.html",
+    "cover": "games/GDL/cover.png"
+  },
+  {
+    "title": "Plants vs Zombies",
+    "entry": "games/PvZ/index.html",
+    "cover": "games/PvZ/cover.png"
+  },
+  {
+    "title": "People Playground",
+    "entry": "games/PeoplePlayground/index.html",
+    "cover": "games/PeoplePlayground/cover.png"
+  },
+  {
+    "title": "Hollow Knight",
+    "entry": "games/HollowKnight/index.html",
+    "cover": "games/HollowKnight/cover.png"
+  },
+  {
+    "title": "Slime Rancher",
+    "entry": "games/SlimeR/index.html",
+    "cover": "games/SlimeR/cover.png"
+  },
+  {
+    "title": "Cuphead",
+    "entry": "games/Cuphead/index.html",
+    "cover": "games/Cuphead/cover.png"
+  },
+  {
+    "title": "Sonic Mania",
+    "entry": "games/SonicMania/index.html",
+    "cover": "games/SonicMania/cover.png"
+  },
+  {
+    "title": "Granny",
+    "entry": "games/Granny/index.html",
+    "cover": "games/Granny/cover.png"
+  },
+  {
+    "title": "Granny 2",
+    "entry": "games/Granny2/index.html",
+    "cover": "games/Granny2/cover.png"
+  },
+  {
+    "title": "Granny 3",
+    "entry": "games/Granny3/index.html",
+    "cover": "games/Granny3/cover.png"
+  },
+  {
+    "title": "Fruit Ninja",
+    "entry": "games/FruitNinja/index.html",
+    "cover": "games/FruitNinja/cover.png"
+  },
+  {
+    "title": "Five Nights at Shrek's Hotel",
+    "entry": "games/FNASH/index.html",
+    "cover": "games/FNASH/cover.png"
+  },
+  {
+    "title": "One Night as Freddy",
+    "entry": "games/ONAF/index.html",
+    "cover": "games/ONAF/cover.png"
+  },
+  {
+    "title": "Cookie Clicker",
+    "entry": "games/CookieClicker/index.html",
+    "cover": "games/CookieClicker/cover.png"
+  },
+  {
+    "title": "Baldi's Basics",
+    "entry": "games/BB/index.html",
+    "cover": "games/BB/cover.png"
+  },
+  {
+    "title": "Baldi Basic's The Ultra Decompile",
+    "entry": "games/BBTUD/index.html",
+    "cover": "games/BBTUD/cover.png"
+  },
+  {
+    "title": "Baldi Basic's Remastered",
+    "entry": "games/BBR/index.html",
+    "cover": "games/BBR/cover.png"
+  },
+  {
+    "title": "Subway Surfers",
+    "entry": "games/Subwaysurfers/index.html",
+    "cover": "games/Subwaysurfers/cover.png"
+  },
+  {
+    "title": "FIFA 11",
+    "entry": "games/FIFA11/index.html",
+    "cover": "games/FIFA11/cover.png"
+  },
+  {
+    "title": "Backrooms",
+    "entry": "games/Backrooms/index.html",
+    "cover": "games/Backrooms/cover.png"
+  },
+  {
+    "title": "Bitlife",
+    "entry": "games/bitlife/index.html",
+    "cover": "games/bitlife/cover.png"
+  },
+  {
+    "title": "1v1.lol",
+    "entry": "games/1v1/index.html",
+    "cover": "games/1v1/cover.png"
+  },
+  {
+    "title": "Deltarune",
+    "entry": "games/Deltarune/index.html",
+    "cover": "games/Deltarune/cover.png"
+  },
+  {
+    "title": "Minecraft 1.12.2",
+    "entry": "games/1.12.2/index.html",
+    "cover": "games/1.12.2/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Breaking the Bank ",
+    "entry": "games/HSBTB/index.html",
+    "cover": "games/HSBTB/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Escaping the Prison",
+    "entry": "games/HSETP/index.html",
+    "cover": "games/HSETP/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Flee the Complex",
+    "entry": "games/HSFTC/index.html",
+    "cover": "games/HSFTC/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Stealing the Diamond",
+    "entry": "games/HSSTD/index.html",
+    "cover": "games/HSSTD/cover.png"
+  },
+  {
+    "title": "Henry Stickmin Infiltrating the Airship",
+    "entry": "games/HSITA/index.html",
+    "cover": "games/HSITA/cover.png"
+  },
+  {
+    "title": "R.E.P.O",
+    "entry": "games/repo/index.html",
+    "cover": "games/repo/cover.png"
+  },
+  {
+    "title": "Slender Man The Eight Pages",
+    "entry": "games/slendermanpages/index.html",
+    "cover": "games/slendermanpages/cover.png"
+  },
+  {
+    "title": "We Become What We Behold",
+    "entry": "games/WBWWB/index.html",
+    "cover": "games/WBWWB/cover.png"
+  },
+  {
+    "title": "Getting Over It with Bennett Foddy",
+    "entry": "games/GOIWBF/index.html",
+    "cover": "games/GOIWBF/cover.png"
+  },
+  {
+    "title": "Raft",
+    "entry": "games/Raft/index.html",
+    "cover": "games/Raft/cover.png"
+  },
+  {
+    "title": "That's Not My Neighbor",
+    "entry": "games/tnmn/index.html",
+    "cover": "games/tnmn/cover.png"
+  },
+  {
+    "title": "Paper.io 2",
+    "entry": "games/paper.io2/index.html",
+    "cover": "games/paper.io2/cover.png"
+  },
+  {
+    "title": "Schoolboy Runaway",
+    "entry": "games/SBR/index.html",
+    "cover": "games/SBR/cover.png"
+  },
+  {
+    "title": "Flappy Bird",
+    "entry": "games/FlappyBird/index.html",
+    "cover": "games/FlappyBird/cover.png"
+  },
+  {
+    "title": "DEBUGGERSZ (Exclusive)",
+    "entry": "games/Debugger/index.html",
+    "cover": "games/Debugger/cover.png"
+  },
+  {
+    "title": "Buckshot Roulette",
+    "entry": "games/Buckshot Roulette/index.html",
+    "cover": "games/Buckshot Roulette/cover.png"
+  },
+  {
+    "title": "Superhot",
+    "entry": "games/Superhot/index.html",
+    "cover": "games/Superhot/cover.png"
+  },
+  {
+    "title": "HALT (Exclusive)",
+    "entry": "games/HALT/index.html",
+    "cover": "games/HALT/cover.png"
+  },
+  {
+    "title": "Scary Teacher 3D",
+    "entry": "games/ST3D/index.html",
+    "cover": "games/ST3D/cover.png"
+  },
+  {
+    "title": "The Impossible Quiz",
+    "entry": "games/TIQ/index.html",
+    "cover": "games/TIQ/cover.png"
+  },
+  {
+    "title": "The Impossible Quiz 2",
+    "entry": "games/TIQ2/index.html",
+    "cover": "games/TIQ2/cover.png"
+  },
+  {
+    "title": "Whack The Creeps",
+    "entry": "games/WTC/index.html",
+    "cover": "games/WTC/cover.png"
+  },
+  {
+    "title": "Kill The Ice Age Baby",
+    "entry": "games/killbaby/index.html",
+    "cover": "games/killbaby/cover.png"
+  },
+  {
+    "title": "Gorilla Tag",
+    "entry": "games/Gtag/index.html",
+    "cover": "games/Gtag/cover.png"
+  }
+]
+
