@@ -281,48 +281,52 @@ document.head.appendChild(style);
 async function loadGames() {
   showMsg("Loading games...");
 
+  let gameList;
   try {
     const res = await fetch("games.json", { cache: "no-store" });
-
-    if (!res.ok) {
-      showMsg("Error: Could not load games");
+    if (!res.ok) throw new Error("Primary load failed");
+    gameList = await res.json();
+  } catch (e) {
+    showMsg("Retrying from backup...");
+    try {
+      const backupRes = await fetch("games_backup.json", { cache: "no-store" });
+      if (!backupRes.ok) throw new Error("Backup load failed");
+      gameList = await backupRes.json();
+    } catch (backupError) {
+      showMsg("Error: Could not load games from any source");
       return;
     }
+  }
 
-    const gameList = await res.json();
+  if (!Array.isArray(gameList)) {
+    showMsg("Error: Games list is not an array");
+    return;
+  }
 
-    if (!Array.isArray(gameList)) {
-      showMsg("Error: Games list is not an array");
-      return;
-    }
+  if (gameList.length === 0) {
+    showMsg("Error: No games found");
+    return;
+  }
 
-    if (gameList.length === 0) {
-      showMsg("Error: No games found");
-      return;
-    }
+  allGames = gameList;
+  showMsg("Loaded " + gameList.length + " games");
+  initTheme();
+  updateStats();
+  updatePlaytimeDisplay();
+  filterAndRenderGames();
 
-    allGames = gameList;
-    showMsg("Loaded " + gameList.length + " games");
-    initTheme();
-    updateStats();
-    updatePlaytimeDisplay();
-    filterAndRenderGames();
-
-    // Check for game ID in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const gameId = urlParams.get('game');
-    if (gameId) {
-      const gameIdx = parseInt(gameId) - 1;
-      if (gameIdx >= 0 && gameIdx < allGames.length) {
-        const game = allGames[gameIdx];
-        if (game && game.entry) {
-          selectGame(game, gameIdx);
-          launchGame();
-        }
+  // Check for game ID in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const gameId = urlParams.get('game');
+  if (gameId) {
+    const gameIdx = parseInt(gameId) - 1;
+    if (gameIdx >= 0 && gameIdx < allGames.length) {
+      const game = allGames[gameIdx];
+      if (game && game.entry) {
+        selectGame(game, gameIdx);
+        launchGame();
       }
     }
-  } catch (e) {
-    showMsg("Error: " + e.message);
   }
 }
 
