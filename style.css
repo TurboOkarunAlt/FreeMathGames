@@ -95,11 +95,8 @@ html[data-theme="light"] .sort-select {
 html,body,#app{height:100%}
 body{
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background-image: url('assets/background.jpg') !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  background-attachment: fixed !important;
-  background-size: cover !important;
+  background: url('assets/background.jpg') no-repeat center center fixed;
+  background-size: cover;
   color:var(--text);
   min-height:100vh;
   overflow:hidden;
@@ -108,12 +105,12 @@ body{
   position:relative;
 }
 
-.bg-blobs {
-  display: none;
+.bg-blobs, .blob {
+  display: none !important;
 }
 
-.blob {
-  display: none;
+body::after {
+  display: none !important;
 }
 
 body::before{
