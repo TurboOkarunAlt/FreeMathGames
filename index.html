@@ -288,6 +288,25 @@
     </div>
   </div>
 
+  <!-- PASSWORD MODAL -->
+  <div id="passwordModal" class="modal" style="display:flex; z-index: 2000;">
+    <div class="modal-content" style="text-align: center; padding: 30px;">
+      <div class="modal-header" style="justify-content: center; border: none;">
+        <h3 style="font-size: 1.8rem;">🔒 Access Protected</h3>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--muted); margin-bottom: 20px; line-height: 1.5;">
+          Due to issues with schools, Aurora is password protected which you can find on the Github Repo 
+          (<a href="https://github.com/TurboOkarunAlt/AuroraPlus" target="_blank" style="color: var(--accent);">https://github.com/TurboOkarunAlt/AuroraPlus</a>). 
+          You can find the password on there.
+        </p>
+        <input type="password" id="passwordInput" class="search-bar" placeholder="Enter Password" style="width: 100%; margin-bottom: 20px; text-align: center;">
+        <button id="passwordSubmitBtn" class="primary-btn" style="width: 100%;">Unlock Aurora</button>
+        <p id="passwordError" style="color: #ff6b6b; margin-top: 15px; display: none; font-weight: 600;">Incorrect Password</p>
+      </div>
+    </div>
+  </div>
+
   <button id="backToTopBtn" title="Back to Top">↑</button>
   <script src="script.js"></script>
 </body>
