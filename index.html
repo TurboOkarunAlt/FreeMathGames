@@ -21,7 +21,7 @@
       <div id="playtime-display" class="stats-display" title="Total playtime">-- h</div>
       <button id="recentBtn" class="icon-btn" title="Recently Played">R</button>
       <button id="helpBtn" class="icon-btn" title="Help & Shortcuts">?</button>
-      <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+      <button id="settingsBtn" class="icon-btn" title="Settings">Settings</button>
     </div>
   </header>
 
@@ -109,8 +109,8 @@
           <h4>Features</h4>
           <div class="help-item"><span class="key">F11</span> Fullscreen mode</div>
           <div class="help-item"><span class="key">Ctrl+F</span> Search games</div>
-          <div class="help-item"><span class="key">🎲</span> Random game launcher</div>
-          <div class="help-item"><span class="key">⏱️</span> Session timer in-game</div>
+          <div class="help-item"><span class="key">Random</span> Random game launcher</div>
+          <div class="help-item"><span class="key">Timer</span> Session timer in-game</div>
           <div class="help-item">Sound effects on interactions</div>
         </div>
         <div style="height:1px;background:rgba(255,255,255,0.05);margin:12px 0;"></div>
@@ -128,75 +128,75 @@
   <div id="settingsModal" class="modal" style="display:none;">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ Settings</h3>
+        <h3>Settings</h3>
         <button id="closeSettingsBtn" class="close-btn">✕</button>
       </div>
       <div class="modal-body">
         <div class="settings-option">
-          <div class="settings-label">🔊 Sound Effects</div>
+          <div class="settings-label">Sound Effects</div>
           <label class="toggle-switch">
             <input type="checkbox" id="soundToggle">
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🌙 Dark Mode</div>
+          <div class="settings-label">Dark Mode</div>
           <label class="toggle-switch">
             <input type="checkbox" id="darkModeToggle">
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">✨ Animations</div>
+          <div class="settings-label">Animations</div>
           <label class="toggle-switch">
             <input type="checkbox" id="animationsToggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">⏱️ Session Timer</div>
+          <div class="settings-label">Session Timer</div>
           <label class="toggle-switch">
             <input type="checkbox" id="timerToggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🚀 Auto-Play on Launch</div>
+          <div class="settings-label">Auto-Play on Launch</div>
           <label class="toggle-switch">
             <input type="checkbox" id="autoPlayToggle">
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🌈 RGB Border</div>
+          <div class="settings-label">RGB Border</div>
           <label class="toggle-switch">
             <input type="checkbox" id="rgbToggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">✨ Particle Effects</div>
+          <div class="settings-label">Particle Effects</div>
           <label class="toggle-switch">
             <input type="checkbox" id="particlesToggle" checked>
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🖼️ Custom Wallpaper</div>
+          <div class="settings-label">Custom Wallpaper</div>
           <div style="display:flex; gap:8px;">
             <button id="bgUploadBtn" class="secondary-btn" style="padding: 6px 12px; font-size: 0.8rem;">Upload</button>
             <button id="bgResetBtn" class="secondary-btn" style="padding: 6px 12px; font-size: 0.8rem; border-color:rgba(255,107,107,0.3); color:#ff6b6b;">Reset</button>
           </div>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🎭 Custom Logo</div>
+          <div class="settings-label">Custom Logo</div>
           <div style="display:flex; gap:8px;">
             <button id="logoUploadBtn" class="secondary-btn" style="padding: 6px 12px; font-size: 0.8rem;">Upload</button>
             <button id="logoResetBtn" class="secondary-btn" style="padding: 6px 12px; font-size: 0.8rem; border-color:rgba(255,107,107,0.3); color:#ff6b6b;">Reset</button>
           </div>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🔢 Game Card Grid</div>
+          <div class="settings-label">Game Card Grid</div>
           <select id="gridSizeSelect" class="sort-select" style="width:100px;">
             <option value="compact">Small</option>
             <option value="normal" selected>Normal</option>
@@ -204,14 +204,14 @@
           </select>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🕒 24-Hour Clock</div>
+          <div class="settings-label">24-Hour Clock</div>
           <label class="toggle-switch">
             <input type="checkbox" id="hourFormatToggle">
             <span class="toggle-slider"></span>
           </label>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🎨 Color Theme</div>
+          <div class="settings-label">Color Theme</div>
           <select id="colorThemeSelect" class="sort-select" style="width:100%; margin-top:8px;">
             <option value="cyberpunk">Cyberpunk (Blue/Red)</option>
             <option value="retro">Retro (Green/Yellow)</option>
@@ -225,13 +225,13 @@
           </select>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🎵 Background Music</div>
+          <div class="settings-label">Background Music</div>
           <select id="musicSelect" class="sort-select" style="width:100%; margin-top:8px;">
             <option value="none">None</option>
           </select>
         </div>
         <div class="settings-option">
-          <div class="settings-label">🔒 Tab Cloak</div>
+          <div class="settings-label">Tab Cloak</div>
           <label class="toggle-switch">
             <input type="checkbox" id="cloakToggle">
             <span class="toggle-slider"></span>
@@ -241,36 +241,36 @@
           <input type="text" id="cloakNameInput" class="search-bar" placeholder="Enter tab name..." style="width:100%; margin-top:8px;">
         </div>
         <div class="settings-option">
-          <div class="settings-label">⭐ Total Favorites</div>
+          <div class="settings-label">Total Favorites</div>
           <div class="settings-value"><span id="favCount">0</span> games</div>
         </div>
         <div class="settings-divider"></div>
         <div class="settings-option" style="flex-direction: column; align-items: stretch;">
           <label for="faviconUpload" style="display:block; margin-bottom:8px;">
             <input type="file" id="faviconUpload" accept="image/*" style="display:none;">
-            <span class="settings-btn" style="display:block; text-align:center; margin:0;">📤 Upload Favicon</span>
+            <span class="settings-btn" style="display:block; text-align:center; margin:0;">Upload Favicon</span>
           </label>
-          <button id="clearImageFaviconBtn" class="settings-btn">🗑️ Clear Favicon</button>
+          <button id="clearImageFaviconBtn" class="settings-btn">Clear Favicon</button>
         </div>
         <div class="settings-divider"></div>
         <div class="settings-option">
-          <button id="clearFavoritesBtn" class="settings-btn danger">🗑️ Clear Favorites</button>
+          <button id="clearFavoritesBtn" class="settings-btn danger">Clear Favorites</button>
         </div>
         <div class="settings-option">
-          <button id="clearRecentBtn" class="settings-btn danger">📜 Clear Recent History</button>
+          <button id="clearRecentBtn" class="settings-btn danger">Clear Recent History</button>
         </div>
         <div class="settings-divider"></div>
         <div class="settings-option">
-          <button id="exportBtn" class="settings-btn">💾 Export Settings</button>
+          <button id="exportBtn" class="settings-btn">Export Settings</button>
         </div>
         <div class="settings-option">
           <label for="importBtn" style="display:block;">
             <input type="file" id="importBtn" accept=".json" style="display:none;">
-            <span class="settings-btn" style="display:block; text-align:center; margin:0;">📥 Import Settings</span>
+            <span class="settings-btn" style="display:block; text-align:center; margin:0;">Import Settings</span>
           </label>
         </div>
         <div class="settings-option">
-          <button id="resetBtn" class="settings-btn danger">🔄 Reset All Settings</button>
+          <button id="resetBtn" class="settings-btn danger">Reset All Settings</button>
         </div>
         <div class="settings-divider"></div>
         <div class="settings-info">
@@ -294,26 +294,81 @@
     </div>
   </div>
 
-  <!-- PASSWORD MODAL -->
-  <div id="passwordModal" class="modal" style="display:flex; z-index: 2000;">
-    <div class="modal-content" style="text-align: center; padding: 30px;">
-      <div class="modal-header" style="justify-content: center; border: none;">
-        <h3 style="font-size: 1.8rem;">🔒 Access Protected</h3>
-      </div>
-      <div class="modal-body">
-        <p style="color: var(--muted); margin-bottom: 20px; line-height: 1.5;">
-          Due to issues with schools, Aurora is password protected which you can find on the Github Repo 
-          (<a href="https://github.com/TurboOkarunAlt/AuroraPlus" target="_blank" style="color: var(--accent);">https://github.com/TurboOkarunAlt/AuroraPlus</a>). 
-          You can find the password on there.
-        </p>
-        <input type="password" id="passwordInput" class="search-bar" placeholder="Enter Password" style="width: 100%; margin-bottom: 20px; text-align: center;">
-        <button id="passwordSubmitBtn" class="primary-btn" style="width: 100%;">Unlock Aurora</button>
-        <p id="passwordError" style="color: #ff6b6b; margin-top: 15px; display: none; font-weight: 600;">Incorrect Password</p>
-      </div>
-    </div>
-  </div>
-
   <button id="backToTopBtn" title="Back to Top">↑</button>
+  <script id="games-data" type="application/json">
+    [
+      {"title": "Baldi's Classic Remaster", "entry": "games/baldi/index.html", "cover": "games/baldi/cover.png"},
+      {"title": "Bendy and the Ink Machine", "entry": "games/bendy/index.html", "cover": "games/bendy/cover.png"},
+      {"title": "Five Nights at Freddy's", "entry": "games/FNAF1/index.html", "cover": "games/FNAF1/cover.png"},
+      {"title": "Five Nights at Freddy's 2", "entry": "games/FNAF2/index.html", "cover": "games/FNAF2/cover.png"},
+      {"title": "Five Nights at Freddy's 3", "entry": "games/FNAF3/index.html", "cover": "games/FNAF3/cover.png"},
+      {"title": "Five Nights at Freddy's 4", "entry": "games/FNAF4/index.html", "cover": "games/FNAF4/cover.png"},
+      {"title": "Five Nights at Freddy's Pizzeria Simulator", "entry": "games/FNAFPS/index.html", "cover": "games/FNAFPS/cover.png"},
+      {"title": "Five Nights at Freddy's Sister Location", "entry": "games/FNAFSL/index.html", "cover": "games/FNAFSL/cover.png"},
+      {"title": "Five Nights at Freddy's Ultimate Custom Night", "entry": "games/FNAFUCN/index.html", "cover": "games/FNAFUCN/cover.png"},
+      {"title": "Five Nights at Freddy's World", "entry": "games/FNAFWORLD/index.html", "cover": "games/FNAFWORLD/cover.png"},
+      {"title": "Five Nights at Candy's", "entry": "games/FNAC/index.html", "cover": "games/FNAC/cover.png"},
+      {"title": "Five Nights at Candy's 2", "entry": "games/FNAC2/index.html", "cover": "games/FNAC2/cover.png"},
+      {"title": "A Bite at Freddy's", "entry": "games/ABAF/index.html", "cover": "games/ABAF/cover.png"},
+      {"title": "Friday Night Funkin'", "entry": "games/FNF/index.html", "cover": "games/FNF/cover.png"},
+      {"title": "Friday Night Funkin' Indie Cross", "entry": "games/IndieCross/index.html", "cover": "games/IndieCross/cover.png"},
+      {"title": "Geometry Dash Lite", "entry": "games/GDL/index.html", "cover": "games/GDL/cover.png"},
+      {"title": "Plants vs Zombies", "entry": "games/PvZ/index.html", "cover": "games/PvZ/cover.png"},
+      {"title": "People Playground", "entry": "games/PeoplePlayground/index.html", "cover": "games/PeoplePlayground/cover.png"},
+      {"title": "Hollow Knight", "entry": "games/HollowKnight/index.html", "cover": "games/HollowKnight/cover.png"},
+      {"title": "Slime Rancher", "entry": "games/SlimeR/index.html", "cover": "games/SlimeR/cover.png"},
+      {"title": "Cuphead", "entry": "games/Cuphead/index.html", "cover": "games/Cuphead/cover.png"},
+      {"title": "Sonic Mania", "entry": "games/SonicMania/index.html", "cover": "games/SonicMania/cover.png"},
+      {"title": "Granny", "entry": "games/Granny/index.html", "cover": "games/Granny/cover.png"},
+      {"title": "Granny 2", "entry": "games/Granny2/index.html", "cover": "games/Granny2/cover.png"},
+      {"title": "Granny 3", "entry": "games/Granny3/index.html", "cover": "games/Granny3/cover.png"},
+      {"title": "Fruit Ninja", "entry": "games/FruitNinja/index.html", "cover": "games/FruitNinja/cover.png"},
+      {"title": "Five Nights at Shrek's Hotel", "entry": "games/FNASH/index.html", "cover": "games/FNASH/cover.png"},
+      {"title": "One Night as Freddy", "entry": "games/ONAF/index.html", "cover": "games/ONAF/cover.png"},
+      {"title": "Cookie Clicker", "entry": "games/CookieClicker/index.html", "cover": "games/CookieClicker/cover.png"},
+      {"title": "Baldi's Basics", "entry": "games/BB/index.html", "cover": "games/BB/cover.png"},
+      {"title": "Baldi Basic's The Ultra Decompile", "entry": "games/BBTUD/index.html", "cover": "games/BBTUD/cover.png"},
+      {"title": "Baldi Basic's Remastered", "entry": "games/BBR/index.html", "cover": "games/BBR/cover.png"},
+      {"title": "Subway Surfers", "entry": "games/Subwaysurfers/index.html", "cover": "games/Subwaysurfers/cover.png"},
+      {"title": "FIFA 11", "entry": "games/FIFA11/index.html", "cover": "games/FIFA11/cover.png"},
+      {"title": "Backrooms", "entry": "games/Backrooms/index.html", "cover": "games/Backrooms/cover.png"},
+      {"title": "Bitlife", "entry": "games/bitlife/index.html", "cover": "games/bitlife/cover.png"},
+      {"title": "1v1.lol", "entry": "games/1v1/index.html", "cover": "games/1v1/cover.png"},
+      {"title": "Deltarune", "entry": "games/Deltarune/index.html", "cover": "games/Deltarune/cover.png"},
+      {"title": "Minecraft 1.12.2", "entry": "games/1.12.2/index.html", "cover": "games/1.12.2/cover.png"},
+      {"title": "Henry Stickmin Breaking the Bank ", "entry": "games/HSBTB/index.html", "cover": "games/HSBTB/cover.png"},
+      {"title": "Henry Stickmin Escaping the Prison", "entry": "games/HSETP/index.html", "cover": "games/HSETP/cover.png"},
+      {"title": "Henry Stickmin Flee the Complex", "entry": "games/HSFTC/index.html", "cover": "games/HSFTC/cover.png"},
+      {"title": "Henry Stickmin Stealing the Diamond", "entry": "games/HSSTD/index.html", "cover": "games/HSSTD/cover.png"},
+      {"title": "Henry Stickmin Infiltrating the Airship", "entry": "games/HSITA/index.html", "cover": "games/HSITA/cover.png"},
+      {"title": "R.E.P.O", "entry": "games/repo/index.html", "cover": "games/repo/cover.png"},
+      {"title": "Slender Man The Eight Pages", "entry": "games/slendermanpages/index.html", "cover": "games/slendermanpages/cover.png"},
+      {"title": "We Become What We Behold", "entry": "games/WBWWB/index.html", "cover": "games/WBWWB/cover.png"},
+      {"title": "Getting Over It with Bennett Foddy", "entry": "games/GOIWBF/index.html", "cover": "games/GOIWBF/cover.png"},
+      {"title": "Raft", "entry": "games/Raft/index.html", "cover": "games/Raft/cover.png"},
+      {"title": "That's Not My Neighbor", "entry": "games/tnmn/index.html", "cover": "games/tnmn/cover.png"},
+      {"title": "Paper.io 2", "entry": "games/paper.io2/index.html", "cover": "games/paper.io2/cover.png"},
+      {"title": "Schoolboy Runaway", "entry": "games/SBR/index.html", "cover": "games/SBR/cover.png"},
+      {"title": "Flappy Bird", "entry": "games/FlappyBird/index.html", "cover": "games/FlappyBird/cover.png"},
+      {"title": "DEBUGGERSZ (Exclusive)", "entry": "games/Debugger/index.html", "cover": "games/Debugger/cover.png"},
+      {"title": "Buckshot Roulette", "entry": "games/Buckshot Roulette/index.html", "cover": "games/Buckshot Roulette/cover.png"},
+      {"title": "Superhot", "entry": "games/Superhot/index.html", "cover": "games/Superhot/cover.png"},
+      {"title": "HALT (Exclusive)", "entry": "games/HALT/index.html", "cover": "games/HALT/cover.png"},
+      {"title": "Scary Teacher 3D", "entry": "games/ST3D/index.html", "cover": "games/ST3D/cover.png"},
+      {"title": "The Impossible Quiz", "entry": "games/TIQ/index.html", "cover": "games/TIQ/cover.png"},
+      {"title": "The Impossible Quiz 2", "entry": "games/TIQ2/index.html", "cover": "games/TIQ2/cover.png"},
+      {"title": "Whack The Creeps", "entry": "games/WTC/index.html", "cover": "games/WTC/cover.png"},
+      {"title": "Kill The Ice Age Baby", "entry": "games/killbaby/index.html", "cover": "games/killbaby/cover.png"},
+      {"title": "Gorilla Tag", "entry": "games/Gtag/index.html", "cover": "games/Gtag/cover.png"}
+    ]
+  </script>
+  <script id="music-data" type="application/json">
+    [
+      {"name": "FE!N", "file": "FE!N.mp3"},
+      {"name": "Lucid Dreams", "file": "Lucid Dreams.mp3"},
+      {"name": "RANSOM", "file": "RANSOM.mp3"}
+    ]
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
