@@ -5,6 +5,22 @@
     "cover": "games/baldi/cover.png"
   },
   {
+    "title": "Baldi's Basics",
+    "entry": "games/BB/index.html",
+    "cover": "games/BB/cover.png"
+  },
+  {
+    "title": "Baldi Basic's The Ultra Decompile",
+    "entry": "games/BBTUD/index.html",
+    "cover": "games/BBTUD/cover.png"
+  },
+  {
+    "title": "Baldi Basic's Remastered",
+    "entry": "games/BBR/index.html",
+    "cover": "games/BBR/cover.png"
+  },
+
+  {
     "title": "Bendy and the Ink Machine",
     "entry": "games/bendy/index.html",
     "cover": "games/bendy/cover.png"
@@ -153,21 +169,6 @@
     "title": "Cookie Clicker",
     "entry": "games/CookieClicker/index.html",
     "cover": "games/CookieClicker/cover.png"
-  },
-  {
-    "title": "Baldi's Basics",
-    "entry": "games/BB/index.html",
-    "cover": "games/BB/cover.png"
-  },
-  {
-    "title": "Baldi Basic's The Ultra Decompile",
-    "entry": "games/BBTUD/index.html",
-    "cover": "games/BBTUD/cover.png"
-  },
-  {
-    "title": "Baldi Basic's Remastered",
-    "entry": "games/BBR/index.html",
-    "cover": "games/BBR/cover.png"
   },
   {
     "title": "Subway Surfers",
