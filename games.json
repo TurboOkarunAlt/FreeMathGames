@@ -19,6 +19,11 @@
     "entry": "games/BBR/index.html",
     "cover": "games/BBR/cover.png"
   },
+  {
+    "title": "Raldi's Crackhouse",
+    "entry": "games/Raldi/index.html",
+    "cover": "games/Raldi/cover.png"
+  },
 
   {
     "title": "Bendy and the Ink Machine",
