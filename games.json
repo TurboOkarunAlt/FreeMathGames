@@ -80,6 +80,16 @@
     "cover": "games/GDL/cover.png"
   },
   {
+    "title": "Geometry Dash World",
+    "entry": "games/GDW/index.html",
+    "cover": "games/GDW/cover.png"
+  },
+  {
+    "title": "Geometry Dash SubZero",
+    "entry": "games/GDSZ/index.html",
+    "cover": "games/GDSZ/cover.png"
+  },
+  {
     "title": "Plants vs Zombies",
     "entry": "games/PvZ/index.html",
     "cover": "games/PvZ/cover.png"
@@ -195,7 +205,7 @@
     "cover": "games/1.12.2/cover.png"
   },
   {
-    "title": "Henry Stickmin Breaking the Bank ",
+    "title": "Henry Stickmin Breaking the Bank",
     "entry": "games/HSBTB/index.html",
     "cover": "games/HSBTB/cover.png"
   },
@@ -320,4 +330,3 @@
     "cover": "games/CandyCrush/cover.png"
   }
 ]
-
