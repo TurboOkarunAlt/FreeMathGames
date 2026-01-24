@@ -368,5 +368,30 @@
     "title": "Sonic the Hedgehog 3",
     "entry": "games/Sonic3/index.html",
     "cover": "games/Sonic3/cover.png"
+  },
+  {
+    "title": "Sonic CD",
+    "entry": "games/SonicCD/index.html",
+    "cover": "games/SonicCD/cover.png"
+  },
+  {
+    "title": "Sonic Advance",
+    "entry": "games/SonicA/index.html",
+    "cover": "games/SonicA/cover.png"
+  },
+  {
+    "title": "Sonic Advance 2",
+    "entry": "games/SonicA2/index.html",
+    "cover": "games/SonicA2/cover.png"
+  },
+  {
+    "title": "Sonic Advance 3",
+    "entry": "games/SonicA3/index.html",
+    "cover": "games/SonicA3/cover.png"
+  },
+  {
+    "title": "Sonic Battle",
+    "entry": "games/SonicBattle/index.html",
+    "cover": "games/SonicBattle/cover.png"
   }
 ]
