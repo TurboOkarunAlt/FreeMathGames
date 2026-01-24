@@ -353,5 +353,10 @@
     "title": "Candy Crush",
     "entry": "games/CandyCrush/index.html",
     "cover": "games/CandyCrush/cover.png"
+  },
+  {
+    "title": "Sonic the Hedgehog",
+    "entry": "games/Sonic1/index.html",
+    "cover": "games/Sonic1/cover.png"
   }
 ]
