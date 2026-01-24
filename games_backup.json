@@ -358,5 +358,15 @@
     "title": "Sonic the Hedgehog",
     "entry": "games/Sonic1/index.html",
     "cover": "games/Sonic1/cover.png"
+  },
+  {
+    "title": "Sonic the Hedgehog 2",
+    "entry": "games/Sonic2/index.html",
+    "cover": "games/Sonic2/cover.png"
+  },
+  {
+    "title": "Sonic the Hedgehog 3",
+    "entry": "games/Sonic3/index.html",
+    "cover": "games/Sonic3/cover.png"
   }
 ]
